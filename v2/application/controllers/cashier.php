@@ -44,44 +44,38 @@ class Cashier extends CI_Controller {
 	{
 		#load model
 		$this->load->model('cashier_model');
+		$search = $this->input->post('btb_no');
 		
-		#form validation
-		//$this->form_validation->set_rules('btb_no', 'btb_no', 'required');
-		
-		#preparing search
-		//if ($this->form_validation->run() == FALSE)
-		{ 
-			#redirect if form btb empty
-			//redirect('cashier/payment/new_receipt'); 
-		} //else
+
+		if(substr($search,0,2) < 13)
 		{
-			$search = $this->input->post('btb_no');
-			
-			# search outgoing dtbarang
+			#incoming
+			$incoming = $this->cashier_model->payment_receipt_incoming($search);
+			if($incoming == TRUE)
+			{
+				# redirect to incoming
+				redirect('cashier/payment_receipt_incoming/' . $search, 'refresh');
+			} 
+			else 
+			{
+				# redirect to search again
+				redirect('cashier/new_receipt/', 'refresh');
+			}
+		} else if(substr($search,0,2) == 20) {
+			#outgoing
 			$outgoing = $this->cashier_model->payment_receipt_outgoing($search);
-			
 			if($outgoing == TRUE)
 			{
 				# redirect to outgoing
 				redirect('cashier/payment_receipt_outgoing/' . $search, 'refresh');
 			}
-			else
+			else 
 			{
-				# search on incoming
-				$incoming = $this->cashier_model->payment_receipt_incoming($search);
-				
-				if($incoming == TRUE)
-				{
-					# redirect to incoming
-					redirect('cashier/payment_receipt_incoming/' . $search, 'refresh');
-				}
-				else
-				{
-					# redirect to search again
-					redirect('cashier/new_receipt/', 'refresh');
-				}
+				# redirect to search again
+				redirect('cashier/new_receipt/', 'refresh');
 			}
 		}
+
 	}
 	
 	public function payment_receipt_outgoing()
@@ -247,8 +241,6 @@ class Cashier extends CI_Controller {
 				#$this->load->view('template/footer');
 				#$this->load->view('template/footer');
 			}
-		
-		
 	}
 	
 	public function payment_receipt_incoming()
