@@ -2,6 +2,9 @@
 <!--<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">-->
 <head>
+<META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">  
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">  
+<META HTTP-EQUIV="Expires" CONTENT="0">  
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>PT Gapura Angkasa KNO - Warehouse Management System</title>
 <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
@@ -33,7 +36,8 @@
 	
 	
 </script>
-	
+
+
 
   
     <!-- Demo page code -->
