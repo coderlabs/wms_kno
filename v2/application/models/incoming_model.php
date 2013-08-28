@@ -456,7 +456,7 @@ class Incoming_model extends CI_Model {
 	{
 		$query = "	
 			SELECT * FROM in_breakdown as bd
-			LEFT JOIN in_dtbarang as indt ON  indt.in_smu = bd.inb_no_smu	
+			LEFT JOIN in_dtbarang as indt ON  indt.in_inb_id = bd.inb_id	
 			WHERE inb_no_smu LIKE '%" . $smu . "%'
 			AND bd.inb_status_void = 'no'
 				";
@@ -468,7 +468,7 @@ class Incoming_model extends CI_Model {
 	{
 		$query = "	
 			SELECT * FROM in_breakdown as bd
-			LEFT JOIN in_dtbarang as indt ON  indt.in_smu = bd.inb_no_smu
+			LEFT JOIN in_dtbarang as indt ON  indt.in_inb_id = bd.inb_id
 			WHERE bd.inb_status_void = 'no'	
 			AND DATE(bd.inb_update_on) = CURDATE()
 			ORDER BY bd.inb_id DESC
