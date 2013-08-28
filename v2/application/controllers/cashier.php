@@ -54,20 +54,24 @@ class Cashier extends CI_Controller {
 			if($incoming == TRUE)
 			{
 				# redirect to incoming
-				redirect('cashier/payment_receipt_incoming/' . $search, 'refresh');
+				$this->session->set_flashdata('no_btb', $search);
+				redirect('cashier/payment_receipt_incoming/', 'refresh');
 			} 
 			else 
 			{
 				# redirect to search again
 				redirect('cashier/new_receipt/', 'refresh');
 			}
-		} else if(substr($search,0,2) == 20) {
+		}
+		elseif(substr($search,0,2) == 20) 
+		{
 			#outgoing
 			$outgoing = $this->cashier_model->payment_receipt_outgoing($search);
 			if($outgoing == TRUE)
 			{
 				# redirect to outgoing
-				redirect('cashier/payment_receipt_outgoing/' . $search, 'refresh');
+				$this->session->set_flashdata('no_btb', $search);
+				redirect('cashier/payment_receipt_outgoing/', 'refresh');
 			}
 			else 
 			{
@@ -75,13 +79,21 @@ class Cashier extends CI_Controller {
 				redirect('cashier/new_receipt/', 'refresh');
 			}
 		}
+		else
+		{
+			# redirect to search again
+			redirect('cashier/new_receipt/', 'refresh');
+		}
 
 	}
 	
 	public function payment_receipt_outgoing()
 	{		
+		$nobtb = $this->session->flashdata('no_btb');
+		
 		#get data from url
-		$search = $this->uri->segment(3,0);
+		#$search = $this->uri->segment(3,0);
+		$search = $this->session->flashdata('no_btb');
 		
 		if($search == 0){redirect('cashier/new_receipt');}
 		
@@ -200,20 +212,6 @@ class Cashier extends CI_Controller {
 				}
 				
 				$data['totalberat'] = $berat_bayar;
-				/*if($berat_bayar <= $minweight )
-				{
-					$berat_bayar = $minweight;
-					
-					# set data min wgt
-					$data['minweight'] = 'y';
-				}
-				else
-				{
-					$berat_bayar = $berat_bayar;
-					# set data min wgt
-					$data['minweight'] = 'n';
-				}*/
-				
 				
 				# payment calculation
 				$data['no_btb'] = $no_btb;
@@ -245,8 +243,11 @@ class Cashier extends CI_Controller {
 	
 	public function payment_receipt_incoming()
 	{
+		$nobtb = $this->session->flashdata('no_btb');
+		
 		# get data from url
-		$search = $this->uri->segment(3,0);
+		#$search = $this->uri->segment(3,0);
+		$search = $this->session->flashdata('no_btb');
 		
 		# if null
 		if($search == 0){redirect('cashier/new_receipt');}
@@ -443,70 +444,91 @@ class Cashier extends CI_Controller {
 		$print['print'] = $this->input->post('btb_no');
 		$print['nodb'] = $no_db;
 		
-		#View Call
-		#$this->load->view('template/header');
-		#$this->load->view('template/breadcumb');
+		$this->session->set_flashdata('no_db', $no_db);
 		
 		if($this->input->post('type') == 0)
 		{
-			#$this->load->view('cashier/print_bti', $print);
 			$this->cashier_model->update_in_dtbarang($this->input->post('btb_no'));
 			$this->cashier_model->update_in_dtbarang_berat($this->input->post('btb_no'), $this->input->post('berat_bayar'));
+			redirect('cashier/print_dbi/', 'refresh');
 		} 
 		elseif($this->input->post('type') == 1)
 		{
-			#$this->load->view('cashier/print_bto',$print);
 			$this->cashier_model->update_out_dtbarang_h($this->input->post('btb_no'));
 			$this->cashier_model->update_out_dtbarang_h_berat($this->input->post('btb_no'), $this->input->post('berat_bayar'));
+			redirect('cashier/print_dbo/', 'refresh');
 		}
-		#$this->load->view('template/footer');
-		
-		redirect('cashier/print_db/'. $no_db);
 	}
 	
-	public function print_db()
+	public function print_dbi()
 	{
 		#model call
 		$this->load->model('cashier_model');
 		$this->load->helper('terbilang');
 		
-		$data['nodb'] = $this->uri->segment(3);
-		#View Call
+		$data['nodb'] = $this->session->flashdata('no_db');
+		
+		# Call view
 		$this->load->view('template/header');
 		$this->load->view('template/breadcumb');
-		$this->load->view('cashier/print_npjg', $data);
-		
+		$this->load->view('cashier/print_npjg_incoming', $data);
 	}
 	
-	public function print_pdf_db()
+	public function print_dbo()
 	{
 		#model call
 		$this->load->model('cashier_model');
 		$this->load->helper('terbilang');
 		
-		$devbil = $this->uri->segment(3);
+		$data['nodb'] = $this->session->flashdata('no_db');
+		
+		# Call view
+		$this->load->view('template/header');
+		$this->load->view('template/breadcumb');
+		$this->load->view('cashier/print_npjg_outgoing', $data);
+	}
 	
-		$devbill_out = $this->cashier_model->get_dev_bill_out_detail($devbil);
+	public function print_pdf_dbi()
+	{
+		#model call
+		$this->load->model('cashier_model');
+		$this->load->helper('terbilang');
+		
+		$no_db = $this->uri->segment(3);
+		
+		$data['query'] = $this->cashier_model->get_delivery_bill_in($no_db);
+		
+		foreach($data['query'] as $row):
+			$data['terbilang'] = number_to_words($row->total_biaya);
+			$type = $row->status;
+			$no_db = $row->nodb;
+			$no_btb = $row->no_smubtb;
+		endforeach;
+		
+		
+		/*$devbill_out = $this->cashier_model->get_dev_bill_out_detail($devbil);
 		$devbill_in = $this->cashier_model->get_dev_bill_in_detail($devbil);
-		if ( $devbill_out != NULL) {
+		
+		if ( $devbill_out != NULL) 
+		{
 			$data['dev_bill'] = $this->cashier_model->get_dev_bill_out_detail($devbil);
 			$set = $data['dev_bill'];
 		} else if ($devbill_in != NULL) {
 			$data['dev_bill'] = $this->cashier_model->get_dev_bill_in_detail($devbil);
 			$set = $data['dev_bill'];
-		}
+		}*/
 		
-		foreach ($set as $row)
+		/*foreach ($set as $row)
 		{
 			$data['terbilang'] = number_to_words($row->total_biaya);
 			$type = $row->status;
 			$devbill = $row->nodb;
 			$no_btb = $row->no_smubtb;
-		}
+		}*/
 		
-		$this->cashier_model->update_status_print($devbill);
+		/*$this->cashier_model->update_status_print($devbill);
 		$this->cashier_model->update_status_dbo($no_btb);
-		
+		*/
 		# Helper Load
 		$this->load->helper('sigap_pdf');
 		
@@ -514,17 +536,22 @@ class Cashier extends CI_Controller {
 		$stream = TRUE; 
 		$papersize = 'legal'; 
 		$orientation = 'potrait';
-		$filename = 'delivery-bill-'.$devbil;
+		$filename = 'npjg-'.$no_db;
 		$data['filename'] = $filename . '.pdf';
-		$stn = $this->input->post('hs_service_site');
+		$stn = 'kno';
 		if ($type == 0)
-		{ $html = $this->load->view('cashier/pdf/print_dbi', $data, true); }
-		else if ($type == 1)
-		{ $html = $this->load->view('cashier/pdf/print_dbo',$data, true); }
-     	pdf_create($html, $filename, $stream, $papersize, $orientation, $stn);
+		{ 
+			#$html = $this->load->view('cashier/pdf/print_dbi', $data, true); 
+		}
+		elseif ($type == 1)
+		{ 
+			#$html = $this->load->view('cashier/pdf/print_dbo',$data, true); 
+		}
+		
+     	#pdf_create($html, $filename, $stream, $papersize, $orientation, $stn);
 		
 		
-		redirect('cashier/payment/');
+		#redirect('cashier/payment/');
 	}
 	
 	

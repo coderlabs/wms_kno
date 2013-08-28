@@ -37,7 +37,7 @@ table.gridtable td {
 </head>
 <body>
 <table class="gridtable">
-<?php foreach($dev_bill as $db)
+<?php foreach($query as $db)
 	{?>
 	<tr>
 		<td><?php //echo '010-900-'.$db->nofaktur;?></td>

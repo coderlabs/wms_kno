@@ -21,6 +21,34 @@ class Cashier_model extends CI_Model {
 	 * email : pandhawa.digital@gmail.com
 	 */
 	 
+	public function get_delivery_bill_in($no_db)
+	{
+		 $query = ("
+		 SELECT * FROM deliverybill as db
+		 JOIN  ( SELECT * FROM in_dtbarang ) as indt ON indt.in_btb = db.no_smubtb
+			WHERE db.nodb = '" . $no_db . "' 
+			AND db.isvoid = 0
+			ORDER BY db.nodb DESC
+			LIMIT 1
+		");
+		 $query = $this->db->query($query);
+		return $query->result();
+	}
+	
+	public function get_delivery_bill_out($no_db)
+	{
+		 $query = ("
+		 SELECT * FROM deliverybill as db
+		 JOIN  ( SELECT * FROM out_dtbarang_h ) as outdt ON outdt.btb_nobtb = db.no_smubtb
+			WHERE db.nodb = '" . $no_db . "' 
+			AND db.isvoid = 0
+			ORDER BY db.nodb DESC
+			LIMIT 1
+		");
+		 $query = $this->db->query($query);
+		return $query->result();
+	}
+	
 	public function payment_receipt_incoming($search)
 	{
 		$this->db->select('*');
