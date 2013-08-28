@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Hospitality Service Traveller Detail | PT Gapura Angkasa Denpasar</title>
+<title>Hospitality Service Traveller Detail | PT Gapura Angkasa Kualanamu</title>
 <style type="text/css">
 html {
 	margin : 0px;
@@ -153,13 +153,13 @@ table.gridtable td {
 		<td><center><?php echo strtoupper($db->user);?></center></td><td></td><td><center>____________________</center></td>
 	</tr>
 	<tr>
-		<td colspan="3"><br/><center>--------- Potong Disini ---------</center><br/></td>
+		<td colspan="3"><br/><center>------------------ Potong Disini ------------------</center><br/></td>
 	</tr>
 	<tr>
-		<td colspan="3"><center><font size="11px">PT. GAPURA ANGKASA - PT. ANGKASA PURA II</font></center></td>
+		<td colspan="3"><center>PT. GAPURA ANGKASA</center></td>
 	</tr>
 	<tr>
-		<td colspan="3"><center>WAREHOUSE</center></td>
+		<td colspan="3"><center>DOMESTIC WAREHOUSE</center></td>
 	</tr>
 	<tr>
 		<td colspan="3"><center>KUALANAMU INTERNATIONAL AIRPORT</center></td>
@@ -191,7 +191,7 @@ table.gridtable td {
 		<td colspan="3"><br/><center>CHECK OLEH PETUGAS</center></td>
 	</tr>
 	<tr>
-		<td>No. SMU</td><td>:</td><td><strong><?php echo $db->nosmu;?></strong></td>
+		<td>No. SMU</td><td>:</td><td><strong><h3><?php echo $db->nosmu;?></h3></strong></td>
 	</tr>
     <tr>
 		<td>No. BTB</td><td>:</td><td><?php echo $db->no_smubtb;?></td>
@@ -217,10 +217,15 @@ table.gridtable td {
 	<tr>
 		<td colspan="3"><center><br/>TERIMA KASIH</center></td>
 	</tr>
-	<tr>
-		<td colspan="3"><p align="right">KNO</p></td>
+    <tr>
+		<td colspan="3"><center><br/>earning reputation for excellent</center></td>
 	</tr>
-	
+	<tr>
+		<td colspan="3"><p align="center">copyright 2013 sigap @ wms.kno.gapura.co.id</p></td>
+	</tr>
+	<tr>
+		<td colspan="3"><br/><center>------------------ Potong Disini ------------------</center><br/></td>
+	</tr>
 	<?php } ?>
 </table>
 </body>

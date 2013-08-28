@@ -154,8 +154,14 @@ table.gridtable td {
 	<tr>
 		<td colspan="3"><center><br/>TERIMA KASIH</center></td>
 	</tr>
+    <tr>
+		<td colspan="3"><center><br/>earning reputation for excellent</center></td>
+	</tr>
 	<tr>
-		<td colspan="3"><div align="right">KNO</div></td>
+		<td colspan="3"><p align="center">copyright 2013 sigap @ wms.kno.gapura.co.id</p></td>
+	</tr>
+	<tr>
+		<td colspan="3"><br/><center>------------------ Potong Disini ------------------</center><br/></td>
 	</tr>
 	
 	<?php } ?>

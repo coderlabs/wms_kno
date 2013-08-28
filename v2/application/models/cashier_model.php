@@ -26,6 +26,7 @@ class Cashier_model extends CI_Model {
 		 $query = ("
 		 SELECT * FROM deliverybill as db
 		 JOIN  ( SELECT * FROM in_dtbarang ) as indt ON indt.in_btb = db.no_smubtb
+		 LEFT JOIN ( SELECT * FROM btb_agent ) as agent ON agent.btb_agent = indt.in_agent
 			WHERE db.nodb = '" . $no_db . "' 
 			AND db.isvoid = 0
 			ORDER BY db.nodb DESC
@@ -40,6 +41,7 @@ class Cashier_model extends CI_Model {
 		 $query = ("
 		 SELECT * FROM deliverybill as db
 		 JOIN  ( SELECT * FROM out_dtbarang_h ) as outdt ON outdt.btb_nobtb = db.no_smubtb
+		 LEFT JOIN ( SELECT * FROM btb_agent ) as agent ON agent.btb_agent = outdt.btb_agent
 			WHERE db.nodb = '" . $no_db . "' 
 			AND db.isvoid = 0
 			ORDER BY db.nodb DESC

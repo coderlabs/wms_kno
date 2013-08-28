@@ -9,7 +9,7 @@
 		}
 		else
 		{
-			#echo '<li>' . anchor('cashier/reprint_db/'. $search, 'CETAK ULANG') . '</li>';
+			echo '<li>' . anchor('cashier/print_pdf_dbo/'. $search, 'CETAK ULANG') . '</li>';
 			echo '<li>' . anchor('cashier/void_dbo/'.$search,'VOID'). '</li>';
 		}
 		?>

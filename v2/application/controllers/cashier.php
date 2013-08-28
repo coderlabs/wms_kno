@@ -505,30 +505,9 @@ class Cashier extends CI_Controller {
 			$no_btb = $row->no_smubtb;
 		endforeach;
 		
+		$this->cashier_model->update_status_print($devbill);
 		
-		/*$devbill_out = $this->cashier_model->get_dev_bill_out_detail($devbil);
-		$devbill_in = $this->cashier_model->get_dev_bill_in_detail($devbil);
 		
-		if ( $devbill_out != NULL) 
-		{
-			$data['dev_bill'] = $this->cashier_model->get_dev_bill_out_detail($devbil);
-			$set = $data['dev_bill'];
-		} else if ($devbill_in != NULL) {
-			$data['dev_bill'] = $this->cashier_model->get_dev_bill_in_detail($devbil);
-			$set = $data['dev_bill'];
-		}*/
-		
-		/*foreach ($set as $row)
-		{
-			$data['terbilang'] = number_to_words($row->total_biaya);
-			$type = $row->status;
-			$devbill = $row->nodb;
-			$no_btb = $row->no_smubtb;
-		}*/
-		
-		/*$this->cashier_model->update_status_print($devbill);
-		$this->cashier_model->update_status_dbo($no_btb);
-		*/
 		# Helper Load
 		$this->load->helper('sigap_pdf');
 		
@@ -539,21 +518,45 @@ class Cashier extends CI_Controller {
 		$filename = 'npjg-'.$no_db;
 		$data['filename'] = $filename . '.pdf';
 		$stn = 'kno';
-		if ($type == 0)
-		{ 
-			#$html = $this->load->view('cashier/pdf/print_dbi', $data, true); 
-		}
-		elseif ($type == 1)
-		{ 
-			#$html = $this->load->view('cashier/pdf/print_dbo',$data, true); 
-		}
+		$html = $this->load->view('cashier/pdf/print_dbi', $data, true); 
+		pdf_create($html, $filename, $stream, $papersize, $orientation, $stn);
 		
-     	#pdf_create($html, $filename, $stream, $papersize, $orientation, $stn);
-		
-		
-		#redirect('cashier/payment/');
 	}
 	
+	public function print_pdf_dbo()
+	{
+		#model call
+		$this->load->model('cashier_model');
+		$this->load->helper('terbilang');
+		
+		$no_db = $this->uri->segment(3);
+		
+		$data['query'] = $this->cashier_model->get_delivery_bill_out($no_db);
+		
+		foreach($data['query'] as $row):
+			$data['terbilang'] = number_to_words($row->total_biaya);
+			$type = $row->status;
+			$no_db = $row->nodb;
+			$no_btb = $row->no_smubtb;
+		endforeach;
+		
+		$this->cashier_model->update_status_print($devbill);
+		$this->cashier_model->update_status_dbo($no_btb);
+		
+		# Helper Load
+		$this->load->helper('sigap_pdf');
+		
+		//PDF Maker
+		$stream = TRUE; 
+		$papersize = 'legal'; 
+		$orientation = 'potrait';
+		$filename = 'npjg-'.$no_db;
+		$data['filename'] = $filename . '.pdf';
+		$stn = 'kno';
+		$html = $this->load->view('cashier/pdf/print_dbo', $data, true); 
+		pdf_create($html, $filename, $stream, $papersize, $orientation, $stn);
+		
+	}
 	
 	
 	public function reprint_db()
