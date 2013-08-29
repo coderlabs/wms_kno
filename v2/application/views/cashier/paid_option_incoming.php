@@ -3,6 +3,6 @@
     <p><strong>Pilihan yang tersedia</strong></p>
     <ol>
     	<li><?php echo anchor('cashier/print_pdf_dbi/'. $search, 'CETAK ULANG');?></li>
-        <li><?php echo anchor('cashier/void_dbi/'.$search,'VOID'); ?></li>
+        <li><?php echo anchor('cashier/void_dbi/'.$search.'/'.$db,'VOID'); ?></li>
     </ol>
 </div>

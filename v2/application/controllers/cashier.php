@@ -101,7 +101,7 @@ class Cashier extends CI_Controller {
 		$this->load->model('cashier_model');
 		
 		# cek payment status
-		$paid = $this->cashier_model->get_payment_status_outgoing($search);
+		$paid = $this->cashier_model->get_void_status($search);
 		
 			if($paid == TRUE)
 			{
@@ -112,6 +112,7 @@ class Cashier extends CI_Controller {
 				
 				foreach($void as $void_item):
 					$void = $void_item->isvoid;
+					$no_db = $void_item->nodb;
 				endforeach;
 				
 				if($void == 1)
@@ -123,6 +124,7 @@ class Cashier extends CI_Controller {
 					$data['void'] = 'no';
 				}
 				
+				$data['db'] = $no_db;
 				# btb paid and offering re print
 				$this->load->view('template/header');
 				$this->load->view('template/breadcumb');
@@ -256,7 +258,7 @@ class Cashier extends CI_Controller {
 		$this->load->model('cashier_model');
 		
 		# cek payment status
-		$paid = $this->cashier_model->get_payment_status_incoming($search);
+		$paid = $this->cashier_model->get_void_status($search);
 		
 			if($paid == TRUE)
 			{
@@ -267,6 +269,7 @@ class Cashier extends CI_Controller {
 				
 				foreach($void as $void_item):
 					$void = $void_item->isvoid;
+					$no_db = $void_item->nodb;
 				endforeach;
 				
 				if($void == 1)
@@ -280,6 +283,7 @@ class Cashier extends CI_Controller {
 				
 				# send data search to view
 				$data['search'] = $search;
+				$data['db'] = $no_db;
 				
 				# btb paid and offering re print
 				$this->load->view('template/header');
@@ -506,6 +510,7 @@ class Cashier extends CI_Controller {
 		endforeach;
 		
 		$this->cashier_model->update_status_print($devbill);
+		$this->cashier_model->update_in_dtbarang($no_btb);
 		
 		
 		# Helper Load
@@ -541,7 +546,7 @@ class Cashier extends CI_Controller {
 		endforeach;
 		
 		$this->cashier_model->update_status_print($devbill);
-		$this->cashier_model->update_status_dbo($no_btb);
+		$this->cashier_model->update_out_dtbarang_h($no_btb);
 		
 		# Helper Load
 		$this->load->helper('sigap_pdf');
@@ -644,6 +649,7 @@ class Cashier extends CI_Controller {
 		$this->load->model('cashier_model');
 		
 		$data['no_btb'] = $this->uri->segment(3);
+		$data['no_db'] = $this->uri->segment(4);
 		$data['cek_barang'] = $this->cashier_model->cek_barang_instore($data['no_btb']);
 		
 		#View Call
@@ -661,8 +667,9 @@ class Cashier extends CI_Controller {
 		$user = $this->session->userdata('logged_in');
 		$user = $user['id_user'];
 		$no_btb = $this->uri->segment(3);
+		$no_db = $this->uri->segment(4);
 		
-		$this->cashier_model->do_void_dbi($no_btb, $user);
+		$this->cashier_model->do_void_dbi($no_btb, $no_db, $user);
 		
 		redirect('cashier');
 	}
@@ -670,6 +677,7 @@ class Cashier extends CI_Controller {
 	public function void_dbo()
 	{
 		$data['no_btb'] = $this->uri->segment(3);
+		$data['no_db'] = $this->uri->segment(4);
 		
 		#View Call
 		$this->load->view('template/header');
@@ -686,8 +694,9 @@ class Cashier extends CI_Controller {
 		$user = $this->session->userdata('logged_in');
 		$user = $user['id_user'];
 		$no_btb = $this->uri->segment(3);
+		$no_db = $this->uri->segment(4);
 		
-		$this->cashier_model->do_void_dbo($no_btb, $user);
+		$this->cashier_model->do_void_dbo($no_btb, $no_db, $user);
 		
 		redirect('cashier');
 	}

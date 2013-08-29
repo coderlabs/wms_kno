@@ -2,7 +2,7 @@
             	<h2>Void Delivery Bill</h2>
 					
                     <?php 
-							echo form_open('cashier/do_void_dbo/'.$no_btb);
+							echo form_open('cashier/do_void_dbo/'.$no_btb.'/'.$no_db);
 							echo form_hidden('no_btb', $no_btb); 
 					?>
                     

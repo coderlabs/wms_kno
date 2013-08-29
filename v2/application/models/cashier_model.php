@@ -129,7 +129,7 @@ class Cashier_model extends CI_Model {
 	{
 		$this->db->select('*');
 		$this->db->where('no_smubtb', $search);
-		#$this->db->where('isvoid', '1');
+		$this->db->where('isvoid', '0');
 		$this->db->order_by('id_deliverybill', 'DESC');
 		$this->db->limit(1);
 		$query = $this->db->get('deliverybill');
@@ -370,16 +370,16 @@ class Cashier_model extends CI_Model {
 		}
 	 }
 	 
-	 function do_void_dbi($no_btb, $user)
+	 function do_void_dbi($no_btb, $no_db, $user)
 	 {
 		$this->db->update('in_dtbarang', array('in_status_bayar'=>'no'), array('in_btb'=>$no_btb));
-		$this->db->update('deliverybill', array('isvoid'=>'1', 'keterangan'=>$this->input->post('reason'),'voidby'=>$user, 'tglvoid' => date("Y-m-d H:i:s")), array('no_smubtb'=>$no_btb));
+		$this->db->update('deliverybill', array('isvoid'=>'1', 'keterangan'=>$this->input->post('reason'),'voidby'=>$user, 'tglvoid' => date("Y-m-d H:i:s")), array('nodb'=>$no_db));
 	 }
 	 
-	 function do_void_dbo($no_btb, $user)
+	 function do_void_dbo($no_btb, $no_db, $user)
 	 {
 		$this->db->update('out_dtbarang_h', array('status_bayar'=>'no', 'posted'=>0), array('btb_nobtb'=>$no_btb));
-		$this->db->update('deliverybill', array('isvoid'=>'1', 'keterangan'=>$this->input->post('reason'),'voidby'=>$user, 'tglvoid' => date("Y-m-d H:i:s")), array('no_smubtb'=>$no_btb));
+		$this->db->update('deliverybill', array('isvoid'=>'1', 'keterangan'=>$this->input->post('reason'),'voidby'=>$user, 'tglvoid' => date("Y-m-d H:i:s")), array('nodb'=>$no_db));
 	 }
 	 
 	 function cek_barang_instore($no_btb)
