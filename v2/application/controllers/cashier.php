@@ -509,9 +509,9 @@ class Cashier extends CI_Controller {
 			$no_btb = $row->no_smubtb;
 		endforeach;
 		
-		$this->cashier_model->update_status_print($devbill);
+		$this->cashier_model->update_status_print($no_db);
 		$this->cashier_model->update_in_dtbarang($no_btb);
-		
+		print_r($data['query']);
 		
 		# Helper Load
 		$this->load->helper('sigap_pdf');
@@ -535,7 +535,7 @@ class Cashier extends CI_Controller {
 		$this->load->helper('terbilang');
 		
 		$no_db = $this->uri->segment(3);
-		
+		$no_btb = '';
 		$data['query'] = $this->cashier_model->get_delivery_bill_out($no_db);
 		
 		foreach($data['query'] as $row):
@@ -544,10 +544,10 @@ class Cashier extends CI_Controller {
 			$no_db = $row->nodb;
 			$no_btb = $row->no_smubtb;
 		endforeach;
-		
-		$this->cashier_model->update_status_print($devbill);
+		$this->cashier_model->update_status_print($no_db);
 		$this->cashier_model->update_out_dtbarang_h($no_btb);
 		
+		$this->load->view('cashier/pdf/print_dbo', $data); 
 		# Helper Load
 		$this->load->helper('sigap_pdf');
 		
@@ -579,6 +579,7 @@ class Cashier extends CI_Controller {
 		#$this->load->view('template/footer');
 	
 	}
+	
 	public function do_reprint_db()
 	{
 		#model call
