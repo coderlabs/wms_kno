@@ -46,7 +46,9 @@
    
     </table>
     
-    <?php echo anchor('incoming/buildup_checklist_pdf/' . $flt_no . '/' . $date . '/', 'Print', 'class="btn btn-primary"'); ?>
+    <?php 
+	echo anchor('outgoing/buildup_checklist_pdf/' . $flight_no_buildup . '/' . $date_buildup . '/', 'Print', 'class="btn btn-primary"'); 
+	?>
     <?php } ?>    
 </div>	
 
