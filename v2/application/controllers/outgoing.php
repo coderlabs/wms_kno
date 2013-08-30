@@ -45,11 +45,11 @@ class Outgoing extends CI_Controller {
 	public function buildup_checklist()
 	{
 			$flt_no = $this->input->post('flt_no');
+			if($flt_no==NULL){redirect('incoming/form_breakdown');};
 			$date = mdate("%Y-%m-%d", strtotime($this->input->post('date')));
 			$this->load->model('outgoing_model');
 			$data['result'] = $this->outgoing_model->create_buildup($flt_no,$date);
-			$data['flight_no_buildup']=$this->input->post('flt_no');
-			$data['date_buildup']=$date;
+			
 			$this->load->view('template/header');
 			$this->load->view('template/breadcumb');
 			$this->load->view('outgoing/menu');
@@ -63,8 +63,7 @@ class Outgoing extends CI_Controller {
 			$date = mdate("%Y-%m-%d", strtotime($this->uri->segment(4,0)));
 			$this->load->model('outgoing_model');
 			$data['result'] = $this->outgoing_model->create_buildup($flt_no,$date);
-			$data['flight']=$flt_no;
-			$data['tanggal']=$date;
+			
 			$this->load->helper('sigap_pdf');
 			$stream = TRUE; 
 			$papersize = 'legal'; 
@@ -75,7 +74,6 @@ class Outgoing extends CI_Controller {
 			pdf_create($html, $filename, $stream, $papersize, $orientation, $stn);
 			$full_filename = $filename . '.pdf';
 	}
-	
 }
 
 /* End of file dashboard.php */
