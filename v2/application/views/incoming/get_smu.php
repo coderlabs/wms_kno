@@ -70,14 +70,16 @@
                 	<?php 
 					if($row->inb_status_gudang == 'instore' )
 						{
-							if($row->in_status_bayar == 'no')
+							if($row->in_status_cetak == '1')
 							{
-								echo anchor('incoming/form_create_btb/' . $row->inb_id, 'Cetak BTB', 'class="btn btn-success"');
+								echo anchor('incoming/reprint_incoming_btb/' . $row->in_btb, 'Cetak ULANG', 'class="btn btn-warning"');
+								#echo anchor('incoming/form_create_btb/' . $row->inb_id, 'Cetak BTB', 'class="btn btn-success"');
 							}
-							else
+							else 
 							{
-								#echo anchor('incoming/reprint_incoming_btb/' . $row->in_btb, 'Cetak ULANG', 'class="btn btn-warning"');
 								echo anchor('incoming/form_create_btb/' . $row->inb_id, 'Cetak BTB', 'class="btn btn-success"');
+								#echo anchor('incoming/reprint_incoming_btb/' . $row->in_btb, 'Cetak ULANG', 'class="btn btn-warning"');
+								#echo anchor('incoming/form_create_btb/' . $row->inb_id, 'Cetak BTB', 'class="btn btn-success"');
 							}
 						}
 					?>

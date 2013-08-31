@@ -62,6 +62,20 @@ table.gridtable td {
 		<td colspan="3"><center><b><h2>CETAK ULANG</h2></b></center></td>
 	</tr>
     <tr>
+		<td colspan="3"><center><b><h3>
+		<?php
+			if($row->in_status_bayar == 'yes')
+			{
+				echo "STATUS PEMBAYARAN : LUNAS";
+			}
+			else
+			{
+				echo "STATUS PEMBAYARAN : BELUM TERBAYAR";
+			}
+		?>
+		</h3></b></center></td>
+	</tr>
+    <tr>
 		<td colspan="3"><center><b><h1><?php echo $row->in_btb;?></h1></b></center></td>
 	</tr>
 	<tr>
