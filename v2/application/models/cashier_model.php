@@ -558,10 +558,50 @@ class Cashier_model extends CI_Model {
 		return $query->result();
 	}
 	
-	public function reprint($no_btb)
+	
+	/* Delivery Bill */
+	public function get_all_db($num,$offset)
 	{
-		
+		$query = " 	SELECT * FROM deliverybill
+					WHERE isvoid = 0
+					ORDER BY nodb DESC , tglbayar DESC
+					LIMIT $offset , $num
+					";
+		$query = $this->db->query($query);
+		return $query->result();
 	}
+	public function count_all_db()
+	{
+		$query = "  SELECT * FROM deliverybill
+					WHERE isvoid = 0
+					";
+		$query = $this->db->query($query);
+		return $query->num_rows();
+	}
+	
+	public function get_db_by_nodb($db,$num,$offset)
+	{
+		if($db == 'ALL'){$db = '';}
+		$query = " 	SELECT * FROM deliverybill
+					WHERE nodb LIKE '%$db%'
+					AND isvoid = 0
+					ORDER BY tglbayar DESC
+					LIMIT $offset , $num
+					";
+		$query = $this->db->query($query);
+		return $query->result();
+	}
+	public function count_db_by_nodb($db)
+	{
+		if($db == 'ALL'){$db = '';}
+		$query = "  SELECT * FROM deliverybill
+					WHERE nodb LIKE '%$db%'
+					AND isvoid = 0
+					";
+		$query = $this->db->query($query);
+		return $query->num_rows();
+	}
+	/* Akhir Delivery Bill */
 }
 
 /* End of file cashier.php */

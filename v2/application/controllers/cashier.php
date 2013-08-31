@@ -914,10 +914,6 @@ class Cashier extends CI_Controller {
 		
 	}
 	
-	function piutang_agent()
-	{
-	}
-	
 	function fix_db()
 	{
 		$this->load->model('cashier_model');
@@ -926,11 +922,9 @@ class Cashier extends CI_Controller {
 		$this->cashier_model->renew_db($old_db_id, $no_db);
 	}
 	
-	
 	function all_inbound()
 	{
 		#$date = mdate('%Y-%m-%d', strtotime($this->input->post('date')));
-		
 		
 		# weighing list pagination
 		$this->load->library('pagination');
@@ -974,6 +968,73 @@ class Cashier extends CI_Controller {
 		$this->load->view('cashier/details_incoming', $data);
 		
 	}
+
+	# awal list delivery bill
+	public function list_db()
+	{
+		$this->load->model('cashier_model');
+		#pagination config
+		$config['base_url'] = base_url().'index.php/cashier/list_db/'; 
+		$config['total_rows'] = $this->cashier_model->count_all_db(); 
+		$config['per_page'] = 30; 
+		$config['uri_segment'] = 3; 
+		$this->pagination->initialize($config);
+		$page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+		
+		#data preparing
+		$data['result']=$this->cashier_model->get_all_db($config['per_page'],$page);
+		$data['offset'] = $page;
+		
+		#view call
+		$this->load->view('template/header');
+		$this->load->view('template/breadcumb');
+		$this->load->view('cashier/list_db',$data);
+		$this->load->view('template/footer');
+	}
+	
+	function do_search_db()
+	{
+		if ($this->input->post('db') == NULL )
+		{
+			$db = str_replace('%20',' ',$this->uri->segment(3));
+		}else{
+			$db = $this->input->post('db');
+		}
+		$db = $this->myUrlEncode($db);
+		
+		if($db == "" ){	$db_link = 'ALL' ; }
+		else{$db_link = $db;}
+		
+		
+		$this->load->model('cashier_model');
+		#pagination config
+		$config['base_url'] = base_url().'index.php/cashier/do_search_db/'.$db_link.'/'; 
+		$config['total_rows'] = $this->cashier_model->count_db_by_nodb($db); 
+		$config['per_page'] = 30; 
+		$config['uri_segment'] = 4; 
+		$this->pagination->initialize($config);
+		$page = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
+		
+		#data preparing
+		$data['result']=$this->cashier_model->get_db_by_nodb($db,$config['per_page'],$page);
+		$data['offset'] = $page;
+		
+		#view call
+		$this->load->view('template/header');
+		$this->load->view('template/breadcumb');
+		$this->load->view('cashier/list_db',$data);
+		$this->load->view('template/footer');
+	
+	}
+	
+	function myUrlEncode($string) {
+		$replacements = array('_', '_', "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_",  "_", "_", "_");
+		$entities = array('!', '*', "'", "(", ")", ";", ":", "@", "&", "=", "+", "$", ",", "/", "?",  "#", "[", "]");
+		return str_replace($entities, $replacements, $string);
+	}
+	
+	# akhir list delivery bill
+	
 }
 
 /* End of file payment.php */

@@ -1,8 +1,8 @@
 <div id='content'>
-            	<h2>SEARCH PIUTANG INCOMING</h2>
+            	<h2>SEARCH PIUTANG OUTGOING</h2>
 					
                     <?php 
-							echo form_open('piutang/do_search_piutang');
+							echo form_open('piutang/do_search_piutang_out');
 					?>
                     
                       <input name="agent" size=40 placeholder="nama agent" type="text">
@@ -15,12 +15,12 @@
 						<thead>
 						<tr>
 							<th>No</th>
-							<th>Tgl Manifest</th>
+							<th>Tgl BTB</th>
 							<th>Agent</th>
-							<th>Penerima</th>
 							<th>No. BTB</th>
 							<th>No. SMU</th>
 							<th>Airline</th>
+							<th>Tujuan</th>
 							
 						</tr>
 						</thead>
@@ -34,12 +34,12 @@
 					 { ?>
 						<tr>
 							<td><?php echo $num++?></td>
-							<td><?php echo $row->in_tgl_manifest?></td>
-							<td><?php echo $row->in_agent?></td>
-							<td><?php echo $row->in_name?></td>
-							<td><?php echo $row->in_btb?></td>
-							<td><?php echo $row->in_smu?></td>
-							<td><?php echo $row->in_airline?></td>
+							<td><?php echo $row->btb_date?></td>
+							<td><?php echo $row->btb_agent?></td>
+							<td><?php echo $row->btb_nobtb?></td>
+							<td><?php echo $row->btb_smu?></td>
+							<td><?php echo $row->airline?></td>
+							<td><?php echo $row->btb_tujuan?></td>
 						</tr>
 					 <?php }?>
 						</tbody>

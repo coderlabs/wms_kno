@@ -20,7 +20,10 @@
                   <li role="presentation">Kasir</li>
                   <li role="presentation"><?php echo anchor('cashier/new_receipt','NPJG Baru'); ?></li>
                   <li role="presentation"><?php echo anchor('cashier/my_balance','Transaksiku'); ?></li>
-                  <li role="presentation" class="divider"></li>
+				  <li role="presentation"><?php echo anchor('piutang/piutang_agent','Piutang Incoming'); ?></li>
+				  <li role="presentation"><?php echo anchor('piutang/piutang_out_agent','Piutang Outgoing'); ?></li>
+				  <li role="presentation"><?php echo anchor('cashier/list_db','List Payment Receipt'); ?></li>
+				  <li role="presentation" class="divider"></li>
                   <?php } ?>
                   <li role="presentation">Laporan Penjualan</li>	
                   <li role="presentation"><?php echo anchor('harian/incoming','LPKH Incoming'); ?></li>
@@ -72,9 +75,10 @@
                   <li role="presentation" class="divider"></li>
                   <?php } ?>
                   <?php if($session_data['level'] == 'outgoing' OR $session_data['level'] == 'admin' OR $session_data['level'] == 'supervisor'){ ?>
-                  <li role="presentation">Doc Pros</li>
+                  <!--<li role="presentation">Doc Pros</li>-->
                   <!--<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Outgoing SMU</a></li> -->
-				  <li role="presentation"><?php echo anchor('outgoing/form_buildup','Build Up Check List'); ?></li>
+				  <li role="presentation">Inbound</li>	
+                  <li role="presentation"><?php echo anchor('outgoing/form_buildup','Build Up Check List'); ?></li>
                   <li role="presentation" class="divider"></li>
                   <?php } ?>
                   <?php if($session_data['level'] == 'buildup'){ ?>
