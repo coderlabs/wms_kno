@@ -511,7 +511,6 @@ class Cashier extends CI_Controller {
 		
 		$this->cashier_model->update_status_print($no_db);
 		$this->cashier_model->update_in_dtbarang($no_btb);
-		print_r($data['query']);
 		
 		# Helper Load
 		$this->load->helper('sigap_pdf');
