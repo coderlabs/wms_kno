@@ -18,9 +18,10 @@
 							<th>Tgl Manifest</th>
 							<th>Agent</th>
 							<th>Penerima</th>
+							<th>No. BTB</th>
 							<th>No. SMU</th>
 							<th>Airline</th>
-							<th>Action</th>
+							
 						</tr>
 						</thead>
 						<tfoot>
@@ -36,9 +37,9 @@
 							<td><?php echo $row->in_tgl_manifest?></td>
 							<td><?php echo $row->in_agent?></td>
 							<td><?php echo $row->in_name?></td>
+							<td><?php echo $row->in_btb?></td>
 							<td><?php echo $row->in_smu?></td>
 							<td><?php echo $row->in_airline?></td>
-							<td></td>
 						</tr>
 					 <?php }?>
 						</tbody>

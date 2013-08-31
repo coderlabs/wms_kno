@@ -50,21 +50,37 @@ class Piutang_model extends CI_Model {
 		return $query->num_rows();
 	}
 	
-	public function get_piutang_by_agent($agent)
+	public function get_piutang_by_agent($agent,$num,$offset)
 	{
 		$query = " 	SELECT * FROM in_dtbarang AS indt 
 					LEFT JOIN (SELECT inb_id,inb_status_void FROM in_breakdown ) AS inb 
 					ON indt.in_inb_id = inb.inb_id
-					WHERE indt.in_status_bayar = 'no' AND inb.inb_status_void='no' 
+					WHERE indt.in_status_bayar = 'no' AND inb.inb_status_void='no'
 					AND ( (indt.in_agent LIKE '%$agent%') OR (indt.in_name LIKE '%$agent%') )
 					ORDER BY indt.in_tgl_manifest DESC,
 					indt.in_smu DESC
+					LIMIT $offset , $num
 					";
 		$query = $this->db->query($query);
 		return $query->result();
 	}
 	
+	public function count_piutang_by_agent($agent)
+	{
+		$query = " 	SELECT * FROM in_dtbarang AS indt 
+					LEFT JOIN (SELECT inb_id,inb_status_void FROM in_breakdown ) AS inb 
+					ON indt.in_inb_id = inb.inb_id
+					WHERE indt.in_status_bayar = 'no' AND inb.inb_status_void='no'
+					AND ( (indt.in_agent LIKE '%$agent%') OR (indt.in_name LIKE '%$agent%') )
+					ORDER BY indt.in_tgl_manifest DESC,
+					indt.in_smu DESC
+					
+					";
+		$query = $this->db->query($query);
+		return $query->num_rows();
+	}
 	
+		
 }
 
 /* End of file cashier.php */
