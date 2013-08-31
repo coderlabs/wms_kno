@@ -71,9 +71,10 @@
                   <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Laporan BTB</a></li>
                   <li role="presentation" class="divider"></li>
                   <?php } ?>
-                  <?php if($session_data['level'] == 'outgoing'){ ?>
+                  <?php if($session_data['level'] == 'outgoing' OR $session_data['level'] == 'admin' OR $session_data['level'] == 'supervisor'){ ?>
                   <li role="presentation">Doc Pros</li>
-                  <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Outgoing SMU</a></li>
+                  <!--<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Outgoing SMU</a></li> -->
+				  <li role="presentation"><?php echo anchor('outgoing/form_buildup','Build Up Check List'); ?></li>
                   <li role="presentation" class="divider"></li>
                   <?php } ?>
                   <?php if($session_data['level'] == 'buildup'){ ?>
