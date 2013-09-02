@@ -155,6 +155,7 @@ document.getElementById("total").value = tsg;
 					<tr>
 						<td colspan="2" >Keterangan : <br/><textarea name="ket" cols="40"></textarea></td>
 					</tr>
+						
 					<!-- hidden  value
 							<input type="hidden" name="actual_weight" value="<?php echo $actual_weight;?>">
 							<input type="hidden" name="paid_weight" value="<?php echo $paid_weight;?>">

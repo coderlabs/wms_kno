@@ -310,6 +310,7 @@ class Cashier extends CI_Controller {
 					$tujuan = $item->in_tujuan;
 					$koli = $item->in_koli;
 					$berat_aktual_btb = $item->in_berat_datang;
+					$berat_volume_btb = $item->in_berat_volume;
 					$berat_bayar_btb = $item->in_berat_bayar;
 					$tanggal_masuk = $item->in_update_on;
 				endforeach; 
@@ -384,6 +385,7 @@ class Cashier extends CI_Controller {
 				$data['airline'] = $airline;
 				$data['tujuan'] = $tujuan;
 				$data['berat_aktual'] = $berat_aktual_btb;
+				$data['berat_volume'] = $berat_volume_btb;
 				$data['berat_bayar'] = $berat_bayar;
 				$data['durasi_aktual'] = $durasi_aktual;
 				$data['durasi_bayar'] = $durasi_bayar;
@@ -433,6 +435,11 @@ class Cashier extends CI_Controller {
 				'nodb' => $no_db,
 				'nofaktur' => $no_faktur,
 				'actual_days' => $this->input->post('jum_hari'),
+				'koli'	=> '',
+				'berat_aktual'	=> '',
+				'berat_volume'	=> '',
+				'berat_hitung'	=> '',
+				'berat_bayar'	=> '',
 				'sewagudang' => $this->input->post('whc'),
 				'sewagudang_after_discount' => $this->input->post('total'),
 				'cargo_charge' => $this->input->post('csc'),
