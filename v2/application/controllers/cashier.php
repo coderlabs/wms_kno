@@ -435,11 +435,7 @@ class Cashier extends CI_Controller {
 				'nodb' => $no_db,
 				'nofaktur' => $no_faktur,
 				'actual_days' => $this->input->post('jum_hari'),
-				'koli'	=> '',
-				'berat_aktual'	=> '',
-				'berat_volume'	=> '',
-				'berat_hitung'	=> '',
-				'berat_bayar'	=> '',
+				
 				'sewagudang' => $this->input->post('whc'),
 				'sewagudang_after_discount' => $this->input->post('total'),
 				'cargo_charge' => $this->input->post('csc'),

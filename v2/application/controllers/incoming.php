@@ -527,11 +527,25 @@ class Incoming extends CI_Controller {
 		redirect('incoming/form_search_btb/'.$smu);
 	}
 	
-	public function void_breakdown()
+	public function void_smu()
 	{
+		$session_data = $this->session->userdata('logged_in');
+		$user = $session_data['id_user'];
+		
 		$inb_id = $this->uri->segment(3,0);
 		$this->load->model('incoming_model');
-		$this->incoming_model->update_status_void_breakdown($inb_id);
+		$this->incoming_model->update_status_void_breakdown($inb_id, $user);
+		redirect('incoming/duplicate_smu');
+	}
+	
+	public function void_breakdown()
+	{
+		$session_data = $this->session->userdata('logged_in');
+		$user = $session_data['id_user'];
+		
+		$inb_id = $this->uri->segment(3,0);
+		$this->load->model('incoming_model');
+		$this->incoming_model->update_status_void_breakdown($inb_id, $user);
 		redirect('incoming/my_breakdown');
 	}
 	
@@ -626,7 +640,19 @@ class Incoming extends CI_Controller {
 			$this->load->view('template/header');
 			$this->load->view('template/breadcumb');
 			
-			$this->load->view('incoming/list_instore',$data);
+			$this->load->view('incoming/duplicate_smu',$data);
+			$this->load->view('template/footer');	
+	}
+	
+	public function duplicate_btb()
+	{
+			
+			$this->load->model('incoming_model');
+			$data['result'] = $this->incoming_model->duplicate_btb();
+			$this->load->view('template/header');
+			$this->load->view('template/breadcumb');
+			
+			$this->load->view('incoming/duplicate_btb',$data);
 			$this->load->view('template/footer');	
 	}
 	

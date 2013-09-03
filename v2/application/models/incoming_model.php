@@ -457,7 +457,7 @@ class Incoming_model extends CI_Model {
 		$query = "	
 			SELECT * FROM in_breakdown as bd
 			LEFT JOIN in_dtbarang as indt ON  indt.in_inb_id = bd.inb_id	
-			WHERE inb_no_smu LIKE '%" . $smu . "%'
+			WHERE bd.inb_no_smu LIKE '%" . $smu . "%'
 			AND bd.inb_status_void = 'no'
 				";
 		$query = $this->db->query($query);
@@ -478,10 +478,11 @@ class Incoming_model extends CI_Model {
 		return	$query->result();
 	}
 	
-	public function update_status_void_breakdown($inb_id)
+	public function update_status_void_breakdown($inb_id, $user)
 	{
+		$date = mdate("%Y-%m-%d %H:%i:%s", time());
 		$this->db->where('inb_id',$inb_id);
-		$this->db->update('in_breakdown',array('inb_status_void' => 'yes'));
+		$this->db->update('in_breakdown',array('inb_status_void' => 'yes', 'inb_status_void_by' => $user, 'inb_status_void_on' => $date));
 	}
 	public function get_data_inbreakdown_btb_by_date($date)
 	{
@@ -553,7 +554,7 @@ class Incoming_model extends CI_Model {
 	
 	public function duplicate_smu()
 	{
-		$query ="	
+		/*$query ="	
 		
 		SELECT *, COUNT(inb_no_smu) as smu FROM in_breakdown as bd
 		LEFT JOIN ( SELECT * from in_dtbarang WHERE in_status_bayar = 'no'  AND in_btb = '') as isi  ON isi.in_smu = bd.inb_no_smu
@@ -561,7 +562,39 @@ class Incoming_model extends CI_Model {
 		AND inb_status_void = 'no'
 		HAVING smu > 1
 		ORDER BY inb_update_on DESC
-				";
+				";*/
+				
+		$query ="
+		SELECT *
+		FROM in_breakdown as users
+		LEFT JOIN ( SELECT * from in_dtbarang ) as isi  ON isi.in_inb_id = users.inb_id
+		JOIN (
+			SELECT inb_no_smu
+			FROM in_breakdown
+			WHERE inb_status_void = 'no'
+			GROUP BY inb_no_smu
+			HAVING count(inb_no_smu) > 1
+		) dup ON users.inb_no_smu = dup.inb_no_smu
+		
+		ORDER BY users.inb_no_smu;
+		";
+		$query = $this->db->query($query);
+		return $query->result();
+	}
+	
+	public function duplicate_btb()
+	{
+		$query ="
+		SELECT *
+		FROM in_dtbarang as users
+		JOIN (
+			SELECT in_smu
+			FROM in_dtbarang
+			GROUP BY in_smu
+			HAVING count(in_smu) > 1
+		) dup ON users.in_smu = dup.in_smu
+		ORDER BY users.in_smu;
+		";
 		$query = $this->db->query($query);
 		return $query->result();
 	}
