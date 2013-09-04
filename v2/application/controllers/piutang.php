@@ -43,6 +43,7 @@ class Piutang extends CI_Controller {
 		#data preparing
 		$data['result']=$this->piutang_model->get_all_piutang($config['per_page'],$page);
 		$data['offset'] = $page;
+		$data['agent']  = "";
 		
 		#view call
 		$this->load->view('template/header');
@@ -77,6 +78,7 @@ class Piutang extends CI_Controller {
 		#data preparing
 		$data['result']=$this->piutang_model->get_piutang_by_agent($agent,$config['per_page'],$page);
 		$data['offset'] = $page;
+		$data['agent']  = $agent;
 		
 		#view call
 		$this->load->view('template/header');
@@ -86,6 +88,32 @@ class Piutang extends CI_Controller {
 	
 	}
 	
+	function pdf_piutang_incoming()
+	{
+		$agent = str_replace('%20',' ',$this->uri->segment(3));
+		$agent = $this->myUrlEncode($agent);
+		$agent = $this->myUrlDecode($agent);
+	
+		$this->load->model('piutang_model');
+		
+		#data preparing
+		$data['result'] = $this->piutang_model->get_all_piutang_by_agent($agent);
+		$data['agent']  = $agent;
+		
+		# Helper Load
+		$this->load->helper('sigap_pdf');
+		$stream = TRUE; 
+		$papersize = 'legal'; 
+		$orientation = 'potrait';
+		$filename = 'piutang-inbound-'.$agent;
+		$stn = 'kno';
+		$html = '';
+		$html = $this->load->view('piutang/pdf/pdf_piutang_in', $data, true);
+     	pdf_create($html, $filename, $stream, $papersize, $orientation, $stn);
+		$full_filename = $filename . '.pdf';
+	}
+	
+		
 	#piutang outgoing
 	function piutang_out_agent()
 	{
@@ -101,6 +129,7 @@ class Piutang extends CI_Controller {
 		#data preparing
 		$data['result']=$this->piutang_model->get_all_piutang_out($config['per_page'],$page);
 		$data['offset'] = $page;
+		$data['agent']  = "";
 		
 		#view call
 		$this->load->view('template/header');
@@ -135,8 +164,9 @@ class Piutang extends CI_Controller {
 		$page = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
 		
 		#data preparing
-		$data['result']=$this->piutang_model->get_piutang_out_by_agent($agent,$config['per_page'],$page);
+		$data['result'] = $this->piutang_model->get_piutang_out_by_agent($agent,$config['per_page'],$page);
 		$data['offset'] = $page;
+		$data['agent']  = $agent;
 		
 		#view call
 		$this->load->view('template/header');
@@ -145,6 +175,35 @@ class Piutang extends CI_Controller {
 		$this->load->view('template/footer');
 	}
 	
+	function pdf_piutang_outgoing()
+	{
+		$agent = str_replace('%20',' ',$this->uri->segment(3));
+		$agent = $this->myUrlEncode($agent);
+		$agent = $this->myUrlDecode($agent);
+	
+		$this->load->model('piutang_model');
+		
+		#data preparing
+		$data['result'] = $this->piutang_model->get_all_piutang_out_by_agent($agent);
+		$data['total']  = $this->piutang_model->count_piutang_out_by_agent($agent);
+		$data['agent']  = $agent;
+		
+		# Helper Load
+		$this->load->helper('sigap_pdf');
+		$stream = TRUE; 
+		$papersize = 'legal'; 
+		$orientation = 'potrait';
+		$filename = 'piutang-outbound-'.$agent;
+		$stn = 'kno';
+		$html = '';
+		$html = $this->load->view('piutang/pdf/pdf_piutang_out', $data, true);
+     	pdf_create($html, $filename, $stream, $papersize, $orientation, $stn);
+		$full_filename = $filename . '.pdf';
+	}
+	
+	
+	
+	#########################################
 	function myUrlEncode($string) {
 		$replacements = array('_', '_', "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_", "_",  "_", "_", "_");
 		$entities = array('!', '*', "'", "(", ")", ";", ":", "@", "&", "=", "+", "$", ",", "/", "?",  "#", "[", "]");

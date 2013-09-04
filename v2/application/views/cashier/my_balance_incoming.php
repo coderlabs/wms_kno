@@ -150,5 +150,5 @@
                       	</tr>
                     </table>
                     
-                    <?php #echo anchor('cashier/my_balance_pdf_result/' . $user . '/' . $date . '/', 'EXPORT TO PDF'); ?>
+                    <?php echo anchor('cashier/my_balance_pdf_result/' . $user . '/' . $date . '/', '<i class="icon-print"></i> EXPORT TO PDF'); ?>
 </div>

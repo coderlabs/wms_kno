@@ -65,16 +65,16 @@
                                 <td><strong>Rp. <?php echo number_format($tot_sub_total_in , 0, ',', '.'); ?></strong></td>
                                 <td><strong>Rp. <?php echo number_format($tot_ppn_in , 0, ',', '.'); ?></strong></td>
                                 <td><strong>Rp. <?php echo number_format($in_grand_total, 0, ',', '.'); ?></strong></td>
-                             </tr>  
+                            </tr>  
                     
                     </table>
                     
-                     <table>
+                    <table>
                     		<tr>
                             	<td colspan="3" align="center"><strong><?php echo strtoupper(mdate("%d-%M-%Y", strtotime($date))); ?></strong></td>
                             	<td colspan="6" align="center"><strong>OUTBOUND SUMMARY INCOME</strong></td>
                             </tr>	
-                           <tr>
+                            <tr>
                             	<td align="center"><strong>Airline</strong></td>
                             	<td align="center"><strong>Koli</strong></td>
                                 <td align="center"><strong>Berat</strong></td>

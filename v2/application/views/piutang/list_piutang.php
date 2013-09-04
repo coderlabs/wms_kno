@@ -1,5 +1,5 @@
 <div id='content'>
-            	<h2>SEARCH PIUTANG INCOMING</h2>
+            	<h2>SEARCH PIUTANG INBOUND</h2>
 					
                     <?php 
 							echo form_open('piutang/do_search_piutang');
@@ -44,5 +44,6 @@
 					 <?php }?>
 						</tbody>
 					</table>
-                
+                 
+				<?php echo anchor('piutang/pdf_piutang_incoming/'.$agent.'/', '<i class="icon-print"></i> EXPORT TO PDF'); ?>
 </div>

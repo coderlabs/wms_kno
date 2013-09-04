@@ -752,7 +752,7 @@ class Cashier extends CI_Controller {
 		$this->load->model('cashier_model');
 		$data['incoming'] = $this->cashier_model->my_balance_incoming($user, $date);
 		$data['outgoing'] = $this->cashier_model->my_balance_outgoing($user, $date);
-		#$data['void'] = $this->cashier_model->my_void($user, $date);
+		$data['void'] = $this->cashier_model->my_void($user, $date);
 		
 		# Helper Load
 		$this->load->helper('sigap_pdf');
@@ -765,11 +765,6 @@ class Cashier extends CI_Controller {
 		$html = $this->load->view('cashier/pdf/my_balance_pdf', $data, true);
      	pdf_create($html, $filename, $stream, $papersize, $orientation, $stn);
 		$full_filename = $filename . '.pdf';
-		/*$this->load->view('template/header');
-		$this->load->view('template/breadcumb');
-		#$this->load->view('cashier/menu');
-		$this->load->view('cashier/my_balance_pdf', $data);
-		$this->load->view('template/footer');*/
 	}
 	
 	function summary()
