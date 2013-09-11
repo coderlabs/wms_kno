@@ -19,7 +19,7 @@ class Incoming extends CI_Controller {
 			{
     			redirect('login');
 			}
-   		 }
+   		}
 	} 
 
 	public function index()
@@ -87,7 +87,7 @@ class Incoming extends CI_Controller {
 			$this->load->view('template/header');
 			$this->load->view('template/breadcumb');
 			$this->load->view('incoming/form_create_btb',$data);
-			#$this->load->view('template/footer');	
+			$this->load->view('template/footer');	
 		}
 	}
 	
@@ -161,6 +161,7 @@ class Incoming extends CI_Controller {
 				'in_tgl_manifest' => $tglmanifest,
 				'in_koli' => $koli,
 				'in_berat_datang' => $berataktual,
+				'in_berat_volume' => $beratvolume,
 				'in_berat_bayar' => $beratbayar,
 				'in_status_cetak' => 1,
 				'in_update_by' => $user,
@@ -724,6 +725,7 @@ class Incoming extends CI_Controller {
 		$this->load->view('incoming/my_breakdown_result',$data);
 		$this->load->view('template/footer');	
 	}
+	
 }
 
 /* End of file welcome.php */
