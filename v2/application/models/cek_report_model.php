@@ -63,28 +63,6 @@ class Cek_report_model extends CI_Model {
 		$query = $this->db->query($query);
 		return $query->result();
 	}
-	/*
-	 SELECT in_dtbarang.in_btb,in_dtbarang.in_berat_bayar,in_dtbarang.in_status_bayar,
-			in_dtbarang.in_koli,deliverybill.no_smubtb,deliverybill.nosmu,deliverybill.nodb,deliverybill.hari,
-			deliverybill.sewagudang,deliverybill.cargo_charge,deliverybill.administrasi,deliverybill.ppn,deliverybill.total_biaya,deliverybill.tglbayar
-			
-			
-			
-			SELECT *
-			FROM in_dtbarang, deliverybill
-			WHERE in_dtbarang.in_status_bayar = 'yes'
-			AND deliverybill.tglbayar LIKE '$date%'
-			AND in_dtbarang.in_btb = deliverybill.no_smubtb
-	 
-	 SELECT *
-			FROM deliverybill,in_dtbarang
-			WHERE in_dtbarang.in_status_bayar = 'yes'
-			AND deliverybill.isvoid = 0
-			AND deliverybill.tglbayar LIKE '$date%'
-			AND in_dtbarang.in_btb = deliverybill.no_smubtb
-			AND ( (	(deliverybill.hari * in_dtbarang.in_berat_bayar *800 +5000) * 1.1 ) <> ( deliverybill.total_biaya )	)
-	 
-	 */
 	
 }
 
