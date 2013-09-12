@@ -101,6 +101,9 @@
                   <li role="presentation"><?php echo anchor('harian/outgoing','LPKH Outgoing');  ?></li>
                   <li role="presentation"><?php echo anchor('cashier/summary','Lap. Summary');  ?></li>
                   <li role="presentation"><?php echo anchor('cashier/reconciliation','Lap. Rekonsiliasi');  ?></li>
+                  <li role="presentation" class="divider"></li>
+                  <li role="presentation"><?php echo anchor('cek_report/form_cek','Cek DB Incoming Manual'); ?></li>
+                  <li role="presentation"><?php echo anchor('cek_report/form_generate','Cek DB Incoming By Query'); ?></li>
                 </ul>
               </li>
               </ul>
