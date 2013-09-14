@@ -728,13 +728,14 @@ class Cashier extends CI_Controller {
 		
 		#model call
 		$this->load->model('cashier_model');
-		$data['incoming'] = $this->cashier_model->my_balance_incoming($user, $date);
-		$data['outgoing'] = $this->cashier_model->my_balance_outgoing($user, $date);
-		$data['void'] = $this->cashier_model->my_void($user, $date);
+		$data['incoming'] = $this->cashier_model->my_summary_incoming_result($user, $date);
+		$data['outgoing'] = $this->cashier_model->my_summary_outgoing_result($user, $date);
+		$data['void'] = $this->cashier_model->my_summary_void_result($user, $date);
 		
+		print_r($data);
 		$this->load->view('template/header');
 		$this->load->view('template/breadcumb');
-		$this->load->view('cashier/my_balance_incoming', $data);
+		$this->load->view('cashier/my_summary_result', $data);
 		#$this->load->view('template/footer');
 	}
 	

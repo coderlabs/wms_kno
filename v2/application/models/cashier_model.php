@@ -432,6 +432,54 @@ class Cashier_model extends CI_Model {
 		return $query->result();
 	 }
 	 
+	 public function my_summary_incoming_result($user,$date)
+	 {
+		$query = ("
+		SELECT * , SUM(sewagudang) as whc, SUM(cargo_charge) as csc, SUM(ppn) as ppn, SUM(administrasi) as adm, SUM(total_biaya) as totbiaya, SUM(totalkoli) as koli, ROUND(SUM(totalberatbayar),1) as kilo FROM deliverybill as db
+			JOIN ( SELECT * from isimanifestin WHERE isvoid = 0) as isi  ON isi.no_smu = db.nosmu
+			JOIN ( SELECT *, airline as in_airline from manifestin WHERE isvoid = 0) as mani ON mani.id_manifestin = isi.id_manifestin
+			WHERE db.isvoid = 0
+			AND db.user = '" . $user . "' 
+			AND DATE(db.tglbayar) = '" . $date . "'
+			AND db.status = 0
+			GROUP BY mani.in_airline
+		");
+		
+		 $query = $this->db->query($query);
+		return $query->result();
+	 }
+	 
+	 public function my_summary_outgoing_result($user,$date)
+	 {
+		$query = ("
+		SELECT *, SUM(sewagudang) as whc, SUM(cargo_charge) as csc, SUM(ppn) as ppn, SUM(administrasi) as adm, SUM(total_biaya) as totbiaya, SUM(btb_totalkoli) as koli, ROUND(SUM(btb_totalberatbayar),1) as kilo FROM deliverybill as db
+		JOIN ( SELECT * from out_dtbarang_h WHERE status_bayar = 'yes' AND isvoid = 0 ) as outdt ON outdt.btb_nobtb = db.no_smubtb
+		WHERE db.isvoid = 0
+		AND db.user = '" . $user . "' 
+		AND DATE(db.tglbayar) = '" . $date . "'
+		AND db.status = 1
+		GROUP BY outdt.airline
+		");
+		
+		 $query = $this->db->query($query);
+		return $query->result();
+	 }
+	 
+	 public function my_summary_void_result($user,$date)
+	 {
+		$query = ("
+		SELECT *, SUM(sewagudang) as whc, SUM(cargo_charge) as csc, SUM(ppn) as ppn, SUM(administrasi) as adm, SUM(total_biaya) as totbiaya FROM deliverybill as db
+		WHERE db.isvoid = 1
+		AND db.user = '" . $user . "' 
+		AND db.voidby = '" . $user . "' 
+		AND DATE(db.tglbayar) = '" . $date . "'
+		GROUP BY db.status
+		");
+		
+		 $query = $this->db->query($query);
+		return $query->result();
+	 }
+	 
 	 public function incoming_summary_income($date, $type)
 	 {
 		 /*$query = ("

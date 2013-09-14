@@ -53,6 +53,7 @@
                 <td align="right"><?php echo number_format($item->sewagudang+$item->cargo_charge+$item->administrasi, 0, ',', '.'); ?></td>
                 <td align="right"><?php echo number_format($item->ppn, 0, ',', '.'); ?></td>
                 <td align="right"><?php echo number_format($item->total_biaya, 0, ',', '.'); ?></td>
+				<td><??> </td>
             </tr>
             <?php 
 			}
