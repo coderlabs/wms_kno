@@ -1,7 +1,8 @@
 <div id='content'>
             	<h2>Summary Report</h2>
 				
-                <?php echo anchor('cashier/pdf_summary_result/' . $date, '<i class="icon-print"></i> Export PDF'); ?>
+                <?php echo anchor('cashier/my_balance_summary_pdf_result/' . $user. '/' . $date, '<i class="icon-print"></i> Export Summary Report to PDF'); ?><br/>
+                <?php echo anchor('cashier/my_balance_detail_pdf_result/' . $user. '/' . $date, '<i class="icon-print"></i> Export Detail Report to PDF'); ?>
                 	
                     <table>
                     		<tr>

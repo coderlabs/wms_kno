@@ -732,14 +732,13 @@ class Cashier extends CI_Controller {
 		$data['outgoing'] = $this->cashier_model->my_summary_outgoing_result($user, $date);
 		$data['void'] = $this->cashier_model->my_summary_void_result($user, $date);
 		
-		print_r($data);
 		$this->load->view('template/header');
 		$this->load->view('template/breadcumb');
 		$this->load->view('cashier/my_summary_result', $data);
 		#$this->load->view('template/footer');
 	}
 	
-	function my_balance_pdf_result()
+	function my_balance_detail_pdf_result()
 	{
 		# incoming
 		/*$user = $this->session->userdata('logged_in');*/
@@ -767,6 +766,38 @@ class Cashier extends CI_Controller {
      	pdf_create($html, $filename, $stream, $papersize, $orientation, $stn);
 		$full_filename = $filename . '.pdf';
 	}
+	
+	
+	function my_balance_summary_pdf_result()
+	{
+		# incoming
+		/*$user = $this->session->userdata('logged_in');*/
+		$user = $this->uri->segment(3);
+		$data['user'] = $user;
+		
+		$date = mdate("%Y-%m-%d", strtotime($this->uri->segment(4)));
+		$data['date'] = $date;
+		
+		#model call
+		$this->load->model('cashier_model');
+		$data['incoming'] = $this->cashier_model->my_summary_incoming_result($user, $date);
+		$data['outgoing'] = $this->cashier_model->my_summary_outgoing_result($user, $date);
+		$data['void'] = $this->cashier_model->my_summary_void_result($user, $date);
+		
+		# Helper Load
+		$this->load->helper('sigap_pdf');
+		$stream = TRUE; 
+		$papersize = 'legal'; 
+		$orientation = 'landscape';
+		$filename = 'lap-kasir-'.$user. '-'.$date;
+		$stn = 'kno';
+		
+		$html = $this->load->view('cashier/pdf/my_pdf_summary_result', $data, true);
+     	pdf_create($html, $filename, $stream, $papersize, $orientation, $stn);
+		$full_filename = $filename . '.pdf';
+	}
+	
+	
 	
 	function summary()
 	{
