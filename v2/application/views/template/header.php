@@ -36,7 +36,24 @@
 	
 	
 </script>
-
+<script>
+$(document).ready(function(){
+    $("#datepicker_start").datepicker({
+        numberOfMonths: 1,
+		dateFormat: 'dd-mm-yy',
+        onSelect: function(selected) {
+		   $("#datepicker_end").datepicker("option","minDate", selected)
+        }
+	});
+    $("#datepicker_end").datepicker({ 
+		numberOfMonths: 1,
+		dateFormat: 'dd-mm-yy',
+        onSelect: function(selected) {
+			$("#datepicker_start").datepicker("option","maxDate", selected)
+        }
+    });  
+});
+</script>
 
 
   

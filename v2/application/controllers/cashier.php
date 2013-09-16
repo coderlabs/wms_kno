@@ -723,21 +723,52 @@ class Cashier extends CI_Controller {
 		$user = $this->input->post('kasir');
 		$data['user'] = $user;
 		
-		$date = mdate("%Y-%m-%d", strtotime($this->input->post('date')));
-		$data['date'] = $date;
+		$startdate = mdate("%Y-%m-%d", strtotime($this->input->post('startdate')));
+		$enddate = mdate("%Y-%m-%d", strtotime($this->input->post('enddate')));
+		$data['startdate'] = $startdate;
+		$data['enddate'] = $enddate;
+		$data['type'] = $this->input->post('type'); 
 		
 		#model call
 		$this->load->model('cashier_model');
-		$data['incoming'] = $this->cashier_model->my_summary_incoming_result($user, $date);
-		$data['outgoing'] = $this->cashier_model->my_summary_outgoing_result($user, $date);
-		$data['void'] = $this->cashier_model->my_summary_void_result($user, $date);
+		if($data['type'] == "incoming"){
+			$data['incoming'] = $this->cashier_model->my_balance_incoming($user, $startdate, $enddate);
+		} 
+		else if($data['type'] == "outgoing"){
+			$data['outgoing'] = $this->cashier_model->my_balance_outgoing($user, $startdate, $enddate);
+		} 
+		else if($data['type'] == "void"){
+			$data['void'] = $this->cashier_model->my_void($user, $startdate, $enddate);
+		}
+		else if($data['type'] == "total"){
+			$data['incoming'] = $this->cashier_model->my_summary_incoming_result($user, $startdate, $enddate);
+			$data['outgoing'] = $this->cashier_model->my_summary_outgoing_result($user, $startdate, $enddate);
+			$data['void'] = $this->cashier_model->my_summary_void_result($user, $startdate, $enddate);
+		}
 		
+		# load view
 		$this->load->view('template/header');
 		$this->load->view('template/breadcumb');
-		$this->load->view('cashier/my_summary_result', $data);
+		
+		if($data['type'] == 'incoming'){
+			$this->load->view('cashier/my_balance_incoming_result', $data);
+		} 
+		else if($data['type'] == 'outgoing'){
+			$this->load->view('cashier/my_balance_outgoing_result', $data);
+		}
+		else if($data['type'] == 'void'){
+			$this->load->view('cashier/my_balance_outgoing_result', $data);
+		}
+		else if($data['type'] == 'total'){
+			$this->load->view('cashier/my_summary_result', $data);
+		}
+		
 		#$this->load->view('template/footer');
 	}
 	
+	
+	
+	# transaksiku pdf
 	function my_balance_detail_pdf_result()
 	{
 		# incoming
@@ -766,8 +797,90 @@ class Cashier extends CI_Controller {
      	pdf_create($html, $filename, $stream, $papersize, $orientation, $stn);
 		$full_filename = $filename . '.pdf';
 	}
-	
-	
+	function my_incoming_balance_detail_pdf_result()
+	{
+		# incoming
+		/*$user = $this->session->userdata('logged_in');*/
+		$user = $this->uri->segment(3);
+		$data['user'] = $user;
+		
+		$startdate = mdate("%Y-%m-%d", strtotime($this->uri->segment(4)));
+		$enddate = mdate("%Y-%m-%d", strtotime($this->uri->segment(5)));
+		$data['startdate'] = $startdate;
+		$data['enddate'] = $startdate;
+		
+		#model call
+		$this->load->model('cashier_model');
+		$data['incoming'] = $this->cashier_model->my_balance_incoming($user, $startdate, $enddate);
+		
+		# Helper Load
+		$this->load->helper('sigap_pdf');
+		$stream = TRUE; 
+		$papersize = 'legal'; 
+		$orientation = 'landscape';
+		$filename = 'lap-incoming-kasir-'.$user. '-'.$startdate. ' sd '.$enddate;
+		$stn = 'kno';
+		
+		$html = $this->load->view('cashier/pdf/my_incoming_balance_pdf', $data, true);
+     	pdf_create($html, $filename, $stream, $papersize, $orientation, $stn);
+		$full_filename = $filename . '.pdf';
+	}
+	function my_outgoing_balance_detail_pdf_result()
+	{
+		# incoming
+		/*$user = $this->session->userdata('logged_in');*/
+		$user = $this->uri->segment(3);
+		$data['user'] = $user;
+		
+		$startdate = mdate("%Y-%m-%d", strtotime($this->uri->segment(4)));
+		$enddate = mdate("%Y-%m-%d", strtotime($this->uri->segment(5)));
+		$data['startdate'] = $startdate;
+		$data['enddate'] = $startdate;
+		
+		#model call
+		$this->load->model('cashier_model');
+		$data['outgoing'] = $this->cashier_model->my_balance_outgoing($user, $startdate, $enddate);
+		
+		# Helper Load
+		$this->load->helper('sigap_pdf');
+		$stream = TRUE; 
+		$papersize = 'legal'; 
+		$orientation = 'landscape';
+		$filename = 'lap-outgoing-kasir-'.$user. '-'.$startdate.' sd '.$enddate;
+		$stn = 'kno';
+		
+		$html = $this->load->view('cashier/pdf/my_outgoing_balance_pdf', $data, true);
+     	pdf_create($html, $filename, $stream, $papersize, $orientation, $stn);
+		$full_filename = $filename . '.pdf';
+	}
+	function my_void_balance_detail_pdf_result()
+	{
+		# incoming
+		/*$user = $this->session->userdata('logged_in');*/
+		$user = $this->uri->segment(3);
+		$data['user'] = $user;
+		
+		$startdate = mdate("%Y-%m-%d", strtotime($this->uri->segment(4)));
+		$enddate = mdate("%Y-%m-%d", strtotime($this->uri->segment(5)));
+		$data['startdate'] = $startdate;
+		$data['enddate'] = $startdate;
+		
+		#model call
+		$this->load->model('cashier_model');
+		$data['void'] = $this->cashier_model->my_void($user, $startdate, $enddate);
+		
+		# Helper Load
+		$this->load->helper('sigap_pdf');
+		$stream = TRUE; 
+		$papersize = 'legal'; 
+		$orientation = 'landscape';
+		$filename = 'lap-void-kasir-'.$user. '-'.$date;
+		$stn = 'kno';
+		
+		$html = $this->load->view('cashier/pdf/my_void_balance_pdf', $data, true);
+     	pdf_create($html, $filename, $stream, $papersize, $orientation, $stn);
+		$full_filename = $filename . '.pdf';
+	}
 	function my_balance_summary_pdf_result()
 	{
 		# incoming
@@ -775,28 +888,29 @@ class Cashier extends CI_Controller {
 		$user = $this->uri->segment(3);
 		$data['user'] = $user;
 		
-		$date = mdate("%Y-%m-%d", strtotime($this->uri->segment(4)));
-		$data['date'] = $date;
+		$startdate = mdate("%Y-%m-%d", strtotime($this->uri->segment(4)));
+		$enddate = mdate("%Y-%m-%d", strtotime($this->uri->segment(5)));
+		$data['enddate'] = $enddate;
 		
 		#model call
 		$this->load->model('cashier_model');
-		$data['incoming'] = $this->cashier_model->my_summary_incoming_result($user, $date);
-		$data['outgoing'] = $this->cashier_model->my_summary_outgoing_result($user, $date);
-		$data['void'] = $this->cashier_model->my_summary_void_result($user, $date);
+		$data['incoming'] = $this->cashier_model->my_summary_incoming_result($user, $startdate, $enddate);
+		$data['outgoing'] = $this->cashier_model->my_summary_outgoing_result($user, $startdate, $enddate);
+		$data['void'] = $this->cashier_model->my_summary_void_result($user, $startdate, $enddate);
 		
 		# Helper Load
 		$this->load->helper('sigap_pdf');
 		$stream = TRUE; 
 		$papersize = 'legal'; 
 		$orientation = 'landscape';
-		$filename = 'lap-kasir-'.$user. '-'.$date;
+		$filename = 'lap-kasir-'.$user. '-'.$startdate.' sd '.$enddate;
 		$stn = 'kno';
 		
 		$html = $this->load->view('cashier/pdf/my_pdf_summary_result', $data, true);
      	pdf_create($html, $filename, $stream, $papersize, $orientation, $stn);
 		$full_filename = $filename . '.pdf';
 	}
-	
+	# akhir transaksiku
 	
 	
 	function summary()

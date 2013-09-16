@@ -14,7 +14,18 @@
                                             </select>
                                 			</div>
                                             <div class="col-lg-2">
-                                                <input type="text" class="form-control" id="datepicker" placeholder="select date" name="date" value="<?php echo mdate('%d-%m-%Y', time()); ?>">
+                                            <select name="type" class="form-control">
+                                                    <option value = "incoming"><?php echo "Incoming"; ?></option>
+                                                    <option value = "outgoing"><?php echo "Outgoing"; ?></option>
+                                                    <option value = "void"><?php echo "Void"; ?></option>
+                                                    <option value = "total"><?php echo "Total"; ?></option>
+                                            </select>
+                                			</div>
+                                            <div class="col-lg-2">
+                                                <input type="text" class="form-control" id="datepicker_start" placeholder="select date" name="startdate" value="<?php echo mdate('%d-%m-%Y', time()); ?>">
+                                            </div>
+											<div class="col-lg-2">
+                                                <input type="text" class="form-control" id="datepicker_end" placeholder="select date" name="enddate" value="<?php echo mdate('%d-%m-%Y', time()); ?>">
                                             </div>
                                             <div class="col-lg-2">
                                                 <?php echo form_submit('submit','Go!', 'class="btn btn-default"'); ?>

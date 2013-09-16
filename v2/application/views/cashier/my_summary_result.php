@@ -1,12 +1,12 @@
 <div id='content'>
             	<h2>Summary Report</h2>
 				
-                <?php echo anchor('cashier/my_balance_summary_pdf_result/' . $user. '/' . $date, '<i class="icon-print"></i> Export Summary Report to PDF'); ?><br/>
-                <?php echo anchor('cashier/my_balance_detail_pdf_result/' . $user. '/' . $date, '<i class="icon-print"></i> Export Detail Report to PDF'); ?>
+                <?php echo anchor('cashier/my_balance_summary_pdf_result/' . $user. '/' . $startdate. '/' . $enddate, '<i class="icon-print"></i> Export Summary Report to PDF'); ?><br/>
+                <?php #echo anchor('cashier/my_balance_detail_pdf_result/' . $user. '/' . $startdate. '/' . $enddate, '<i class="icon-print"></i> Export Detail Report to PDF'); ?>
                 	
                     <table>
                     		<tr>
-                            	<td colspan="3" align="center"><strong><?php echo strtoupper(mdate("%d-%M-%Y", strtotime($date))); ?></strong></td>
+                            	<td colspan="3" align="center"><strong><?php echo strtoupper($user)." ".strtoupper(mdate("%d-%M-%Y", strtotime($startdate))).' s/d '.strtoupper(mdate("%d-%M-%Y", strtotime($enddate))); ?></strong></td>
                             	<td colspan="6" align="center"><strong>INBOUND SUMMARY INCOME</strong></td>
                             </tr>	
                             <tr>
@@ -72,7 +72,7 @@
                     
                     <table>
                     		<tr>
-                            	<td colspan="3" align="center"><strong><?php echo strtoupper(mdate("%d-%M-%Y", strtotime($date))); ?></strong></td>
+                            	<td colspan="3" align="center"><strong><?php echo strtoupper($user)." ".strtoupper(mdate("%d-%M-%Y", strtotime($startdate))).' s/d '.strtoupper(mdate("%d-%M-%Y", strtotime($enddate))); ?></strong></td>
                             	<td colspan="6" align="center"><strong>OUTBOUND SUMMARY INCOME</strong></td>
                             </tr>	
                             <tr>
@@ -139,7 +139,7 @@
 					
                     <table>
                     		<tr>
-                            	<td colspan="3" align="center"><strong><?php echo strtoupper(mdate("%d-%M-%Y", strtotime($date))); ?></strong></td>
+                            	<td colspan="3" align="center"><strong><?php echo strtoupper($user)." ".strtoupper(mdate("%d-%M-%Y", strtotime($startdate))).' s/d '.strtoupper(mdate("%d-%M-%Y", strtotime($enddate))); ?></strong></td>
                             	<td colspan="6" align="center"><strong>VOID SUMMARY</strong></td>
                             </tr>	
                             <tr>
