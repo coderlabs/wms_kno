@@ -96,6 +96,7 @@
                 <a href="#" id="drop2" role="button" class="dropdown-toggle" data-toggle="dropdown">Supervisor <b class="caret"></b></a>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
                   <li role="presentation"><?php echo anchor('login/register','Register User'); ?></li>
+                  <li role="presentation"><?php echo anchor('user','Daftar User'); ?></li>
                   <li role="presentation" class="divider"></li>
                   <li role="presentation"><?php echo anchor('harian/incoming','LPKH Incoming'); ?></li>
                   <li role="presentation"><?php echo anchor('harian/outgoing','LPKH Outgoing');  ?></li>
