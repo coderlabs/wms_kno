@@ -21,12 +21,13 @@ class Harian_model extends CI_Model {
 	 * email : pandhawa.digital@gmail.com
 	 */
 	 
-	 public function details_outgoing($date, $airline)
+	 public function details_outgoing($startdate,$enddate, $airline)
 	 {
 		 
 		 $this->db->where('deliverybill.isvoid', 0);
 		 $this->db->where('out_dtbarang_h.isvoid', 0);
-		 $this->db->where('DATE(tglbayar)', $date);
+		 $this->db->where('DATE(tglbayar) >= ', $startdate);
+		 $this->db->where('DATE(tglbayar) <= ', $enddate);
 		 $this->db->where('airline', $airline);
 		 $this->db->order_by("tglbayar", "asc"); 
 		 
@@ -38,18 +39,18 @@ class Harian_model extends CI_Model {
 		 
 	 } 
 	 
-	 public function get_total_outgoing($date, $airline)
+	 public function get_total_outgoing($startdate,$enddate, $airline)
 	 {
 		 $this->db->select('SUM(btb_totalberat) as totalberat, SUM(btb_totalvolume) as totalvolume, SUM(btb_totalberatbayar) as beratbayar, SUM(btb_totalkoli) as totalkoli, SUM(sewagudang) as sewagudang, SUM(administrasi) as administrasi, SUM(cargo_charge) as cargo_charge, SUM(ppn) as ppn, SUM(total_biaya) as total_biaya');
 		 $this->db->where('deliverybill.isvoid', 0);
 		 $this->db->where('out_dtbarang_h.isvoid', 0);
-		 $this->db->where('DATE(tglbayar)', $date);
+		 $this->db->where('DATE(tglbayar) >= ', $startdate);
+		 $this->db->where('DATE(tglbayar) <= ', $enddate);
 		 $this->db->where('airline', $airline);
 		 $this->db->join('out_dtbarang_h', 'out_dtbarang_h.btb_nobtb = deliverybill.no_smubtb');
 		 $query = $this->db->get('deliverybill');
 		 
 		 return $query->result();
-		 
 		 
 	 }
 	 

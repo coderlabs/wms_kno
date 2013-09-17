@@ -48,7 +48,7 @@ Domestic Cargo Warehouse Kualanamu International Airport</font><br/>
 </div>
 <body>
 <div id="content">
-    	Laporan Pendapatan Harian Incoming <br/> Airline : <?php echo strtoupper($airline); ?>  Tanggal : <?php echo mdate('%d-%m-%Y',strtotime($date)); ?><br />
+    	Laporan Pendapatan Harian Incoming <br/> Airline : <?php echo strtoupper($airline); ?>  Tanggal : <?php echo mdate('%d-%m-%Y',strtotime($startdate))." s/d ".mdate('%d-%m-%Y',strtotime($enddate)); ?><br />
         <table border="1" class="gridtable" width="100%">
         	<thead>
 				<tr>

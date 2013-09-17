@@ -2,7 +2,7 @@
     	PT Gapura Angkasa - PT Angkasa Pura II<br />
         Domestic Cargo Warehouse Kualanamu International Airport<br />
         <br />
-    	Laporan Pendapatan Harian Outgoing Airline : <?php echo strtoupper($airline); ?>  Tanggal : <?php echo $date; ?><br />
+    	Laporan Pendapatan Harian Outgoing Airline : <?php echo strtoupper($airline); ?>  Tanggal : <?php echo $startdate." s/d ".$enddate; ?><br />
         <table>
 
         	<tr>
@@ -81,6 +81,6 @@
             </tr>
         </table>
         
-        <?php echo anchor('harian/outgoing_pdf/' . $airline . '/' . $date . '/', 'export to pdf' ); ?>
+        <?php echo anchor('harian/outgoing_pdf/' . $airline . '/' . $startdate . '/' . $enddate . '/', 'export to pdf' ); ?>
     
 </div>

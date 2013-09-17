@@ -44,13 +44,15 @@ class Harian extends CI_Controller {
 	
 	public function outgoing_result()
 	{
-		$date = mdate('%Y-%m-%d', strtotime($this->input->post('date')));
-		$data['date'] = $date;
+		$startdate = mdate('%Y-%m-%d', strtotime($this->input->post('startdate')));
+		$enddate = mdate('%Y-%m-%d', strtotime($this->input->post('enddate')));
+		$data['startdate'] = $startdate;
+		$data['enddate'] = $enddate;
 		$airline = $this->input->post('airline');
 		$data['airline'] = $airline;
 		
 		$this->load->model('harian_model');
-		$data['details'] = $this->harian_model->details_outgoing($date, $airline);
+		$data['details'] = $this->harian_model->details_outgoing($startdate, $enddate, $airline);
 		#$data['total'] = $this->harian_model->get_total_outgoing($date, $airline);
 		#print_r($data);
 		$this->load->view('template/header');
@@ -62,20 +64,22 @@ class Harian extends CI_Controller {
 
 	public function outgoing_pdf()
 	{
-		$date = $this->uri->segment(4, mdate("%Y-%m-%d", time()));
-		$data['date'] = $date;
+		$startdate = $this->uri->segment(4, mdate("%Y-%m-%d", time()));
+		$data['startdate'] = $startdate;
+		$enddate = $this->uri->segment(5, mdate("%Y-%m-%d", time()));
+		$data['enddate'] = $enddate;
 		$airline = $this->uri->segment(3, 'ga');
 		$data['airline'] = $airline;
 		
 		$this->load->model('harian_model');
-		$data['details'] = $this->harian_model->details_outgoing($date, $airline);
+		$data['details'] = $this->harian_model->details_outgoing($startdate,$enddate,$airline);
 		#$data['total'] = $this->harian_model->get_total_outgoing($date, $airline);
 		
 		$this->load->helper('sigap_pdf');
 		$stream = TRUE; 
 		$papersize = 'legal'; 
 		$orientation = 'landscape';
-		$filename = 'lpkh-outgoing-'.$airline.'-'.$date;
+		$filename = 'lpkh-outgoing-'.$airline.'-'.$startdate.' sd '.$enddate;
 		$stn = $this->input->post('hs_service_site');
 		$html = $this->load->view('harian/details_pdf_outgoing',$data, true); 
      	pdf_create($html, $filename, $stream, $papersize, $orientation, $stn);
