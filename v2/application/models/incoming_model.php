@@ -38,6 +38,17 @@ class Incoming_model extends CI_Model {
 			);
 		$this->db->insert('in_breakdown',$data);
 	}
+	
+	public function cek_smu_parsial($smu)
+	{
+		$date = mdate("%Y-%m-%d", time());
+		$query = " 
+				SELECT * FROM in_breakdown as inbd
+				WHERE inbd.inb_no_smu = '$smu'
+				AND DATE(inbd.inb_instore) = '$date' ";
+		$query = $this->db->query($query);
+		return $query->num_rows();
+	}
 	 
 	public function daily_stock_opname($date, $airline)
 	{

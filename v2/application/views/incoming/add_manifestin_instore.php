@@ -18,6 +18,10 @@
 		{ 
 			echo "<b> Proses Input Gagal <br> Input Data harus sesuai dengan format yang disediakan </b>";
 		}
+		elseif(($this->uri->segment(4) == "error1062" ) OR ($this->uri->segment(3) == "error1062" ))
+		{ 
+			echo "<b> Proses Input Gagal <br> Data yang anda input terindikasi sebagai <font color='#ff0000' >DUPLIKAT DATA</font> </b>";
+		}
 		elseif($this->uri->segment(4) == "success" )
 		{ 
 			echo "<b> Proses Input Berhasil </b>";

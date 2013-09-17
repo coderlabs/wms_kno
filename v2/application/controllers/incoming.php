@@ -330,10 +330,18 @@ class Incoming extends CI_Controller {
 				{
 					# success
 					$this->load->model('incoming_model');
-					$this->incoming_model->insert_data_in_breakdown($airlines,$smu,$koli,$berat,$status,$user);
-					# call model to update breakdown outstore
-					#$this->incoming_model->update_breakdown($inb_id);
-					redirect('incoming/add_manifest_instore/'.$smu.'/success');
+					
+					#cek smu parsial berdasarkan tgl instore breakdown
+					$parsial = $this->incoming_model->cek_smu_parsial($smu);
+					
+					if($parsial > 0){
+						redirect('incoming/add_manifest_instore/'.$smu.'/error1062');
+					} else {
+						$this->incoming_model->insert_data_in_breakdown($airlines,$smu,$koli,$berat,$status,$user);
+						# call model to update breakdown outstore
+						#$this->incoming_model->update_breakdown($inb_id);
+						redirect('incoming/add_manifest_instore/'.$smu.'/success');
+					}
 				}
 			}
 			else
