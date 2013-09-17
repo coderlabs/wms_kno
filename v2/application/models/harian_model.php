@@ -53,7 +53,7 @@ class Harian_model extends CI_Model {
 		 
 	 }
 	 
-	 public function details_incoming($date, $airline, $data_type)
+	 public function details_incoming($startdate, $enddate, $airline, $data_type)
 	 {
 		/*$this->db->where('DATE(manifestin.tglmanifest)', $date);
 		$this->db->where('airline', $airline);
@@ -72,7 +72,8 @@ class Harian_model extends CI_Model {
 			JOIN ( SELECT * from isimanifestin WHERE isvoid = 0) as isi  ON isi.no_smu = db.nosmu
 			JOIN ( SELECT * from manifestin WHERE airline = '" . $airline . "' AND isvoid = 0) as mani ON mani.id_manifestin = isi.id_manifestin
 			WHERE db.isvoid = 0
-			AND DATE(db.tglbayar) = '" . $date . "'
+			AND DATE(db.tglbayar) >= '" . $startdate . "'
+			AND DATE(db.tglbayar) <= '" . $enddate . "'
 			AND db.status = 0
 			ORDER BY db.tglbayar ASC
 			");
@@ -83,7 +84,8 @@ class Harian_model extends CI_Model {
 			SELECT * FROM deliverybill as db
 			JOIN ( SELECT * from in_dtbarang WHERE in_airline = '" . $airline . "' AND in_status_bayar = 'yes' ) as indt ON indt.in_btb = db.no_smubtb
 			WHERE db.isvoid = 0
-			AND DATE(db.tglbayar) = '" . $date . "'
+			AND DATE(db.tglbayar) >= '" . $startdate . "'
+			AND DATE(db.tglbayar) <= '" . $enddate . "'
 			AND db.status = 0
 			ORDER BY db.tglbayar ASC
 			");
@@ -94,10 +96,11 @@ class Harian_model extends CI_Model {
 		
 	 }
      
-	 public function get_total_incoming($date, $airline)
+	public function get_total_incoming($startdate, $enddate, $airline)
 	{
 		$this->db->select('SUM(totalberat) as totalberat, SUM(totalberatbayar) as beratbayar, SUM(totalkoli) as totalkoli, SUM(sewagudang) as sewagudang, SUM(administrasi) as administrasi, SUM(cargo_charge) as cargo_charge, SUM(ppn) as ppn, SUM(total_biaya) as total_biaya');
-		$this->db->where('DATE(manifestin.tglmanifest)', $date);
+		$this->db->where('DATE(manifestin.tglmanifest) >=', $startdate);
+		$this->db->where('DATE(manifestin.tglmanifest) <=', $enddate);
 		$this->db->where('airline', $airline);
 		$this->db->where('deliverybill.isvoid',0);
 		$this->db->where('isimanifestin.isvoid',0);

@@ -1,7 +1,33 @@
 <div id="content">
 	<?php echo form_open('harian/incoming_result'); ?>
    <h2>Laporan Penjualan Kas Harian Incoming</h2>
-      <table>
+     <div class="container-fluid">
+		<div class="row-fluid">
+        	<div class="block span2">
+            		<form class="form-inline">
+					  <div class="control-group">
+						<div class="controls">
+						<select name="airline">
+							<option value="none">select airline</option>
+							<?php foreach ( $airline as $item ) : ?>
+								<option value="<?php echo $item->airlinecode;?>"><?php echo ucfirst( $item->airlinename ) ?></option>
+							<?php endforeach ?> 
+						</select>
+						&nbsp;&nbsp;
+						<input type="text"  id="datepicker_start" placeholder="select date" name="startdate" value="<?php echo mdate('%d-%m-%Y', time()); ?>"> s/d 
+						<input type="text"  id="datepicker_end" placeholder="select date" name="enddate" value="<?php echo mdate('%d-%m-%Y', time()); ?>">
+						&nbsp;&nbsp;	
+						<button type="submit" class="btn btn-primary">Print</button>
+						</div>
+					  </div>
+					</form>
+				
+			</div>
+		</div>
+	</div>	
+	  
+	  <?php /* ?>
+	  <table>
 		
         <tr>
         	<td>Date</td><td><input type="text" name="date" id="datepicker" placeholder="select date"></td>
@@ -23,5 +49,6 @@
 		
       </table>
       <?php echo form_close(); ?>
+	  <?php */ ?>
 </div>
 
