@@ -312,7 +312,7 @@ class Cashier extends CI_Controller {
 					$berat_aktual_btb = $item->in_berat_datang;
 					$berat_volume_btb = $item->in_berat_volume;
 					$berat_bayar_btb = $item->in_berat_bayar;
-					$tanggal_masuk = $item->in_update_on;
+					$tanggal_masuk = $item->in_tgl_manifest;
 				endforeach; 
 				
 				# prepare harga sewa by agent
@@ -335,7 +335,6 @@ class Cashier extends CI_Controller {
 				
 				if($durasi_aktual <= $minhari )
 				{
-					$durasi_aktual = 1;
 					$durasi_bayar = 1;
 				}
 				else

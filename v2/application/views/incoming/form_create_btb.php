@@ -7,7 +7,8 @@
             <div class="col-lg-2">	
             <?php echo form_open('incoming/create_btb'); ?>    			
             <table>
-				<?php if(isset($result)) { foreach($result as $row){ ?>
+				<?php if(isset($result)) { foreach($result as $row){ 
+				echo form_hidden('tgl_masuk', $row->inb_instore);?>
 				
                 <tr>
                 	<td>Airline</td><td>:</td><td><input type="text" name="airline" value="<?php echo strtoupper($row->inb_airlines); ?>" readonly="readonly"></td>

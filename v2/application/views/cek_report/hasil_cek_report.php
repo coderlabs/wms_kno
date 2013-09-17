@@ -6,6 +6,7 @@
 				<th>NPJG</th>
                 <th>No SMU</th>
                 <th>No BTB</th>
+                <th>Aktual Hari</th>
                 <th>Hari</th>
                 <th>Koli</th>
                 <th>Berat</th>
@@ -44,6 +45,7 @@
 				<td><?php echo $row->nodb; ?></td>
 				<td><?php echo $row->nosmu; ?></td>
 				<td><?php echo $row->no_smubtb; ?></td>
+				<td><?php echo $row->actual_days; ?></td>
 				<td><?php echo $row->hari; ?></td>
 				<td><?php echo $row->in_koli; ?></td>
 				<td><?php echo $row->in_berat_bayar; ?></td>

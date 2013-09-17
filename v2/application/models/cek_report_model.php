@@ -25,11 +25,11 @@ class Cek_report_model extends CI_Model {
 		$query = "
 			SELECT in_dtbarang.in_btb,in_dtbarang.in_berat_bayar,in_dtbarang.in_status_bayar,
 			in_dtbarang.in_koli,deliverybill.no_smubtb,deliverybill.nosmu,deliverybill.nodb,deliverybill.hari,deliverybill.isvoid,
-			deliverybill.sewagudang,deliverybill.cargo_charge,deliverybill.administrasi,deliverybill.ppn,deliverybill.total_biaya,deliverybill.tglbayar
+			deliverybill.sewagudang,deliverybill.cargo_charge,deliverybill.administrasi,deliverybill.ppn,deliverybill.total_biaya,deliverybill.tglbayar, deliverybill.actual_days
 			FROM in_dtbarang, deliverybill
 			WHERE in_dtbarang.in_status_bayar =  'yes'
 			AND deliverybill.isvoid = 0
-			AND deliverybill.tglbayar LIKE  '2013-08-13%'
+			AND DATE(deliverybill.tglbayar) LIKE  '$date'
 			AND in_dtbarang.in_btb = deliverybill.no_smubtb
 			AND (
 			(
@@ -50,11 +50,11 @@ class Cek_report_model extends CI_Model {
 		$query = "
 			SELECT in_dtbarang.in_btb,in_dtbarang.in_berat_bayar,in_dtbarang.in_status_bayar,
 			in_dtbarang.in_koli,deliverybill.no_smubtb,deliverybill.nosmu,deliverybill.nodb,deliverybill.hari,deliverybill.isvoid,
-			deliverybill.sewagudang,deliverybill.cargo_charge,deliverybill.administrasi,deliverybill.ppn,deliverybill.total_biaya,deliverybill.tglbayar
+			deliverybill.sewagudang,deliverybill.cargo_charge,deliverybill.administrasi,deliverybill.ppn,deliverybill.total_biaya,deliverybill.tglbayar, deliverybill.actual_days
 			FROM in_dtbarang, deliverybill
 			WHERE in_dtbarang.in_status_bayar =  'yes'
 			AND deliverybill.isvoid = 0
-			AND deliverybill.tglbayar LIKE  '2013-08-13%'
+			AND DATE(deliverybill.tglbayar) LIKE  '$date'
 			AND in_dtbarang.in_btb = deliverybill.no_smubtb
 			ORDER BY  `in_dtbarang`.`in_btb` ASC 
 

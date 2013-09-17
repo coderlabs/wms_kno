@@ -122,6 +122,7 @@ class Incoming extends CI_Controller {
 			$koli = $this->input->post('koli');
 			$berataktual = $this->input->post('berataktual');
 			$beratvolume = $this->input->post('beratvolume');
+			$tglmanifest = $this->input->post('tgl_masuk');
 			
 			# berat bayar
 			if($berataktual > $beratvolume)
@@ -135,7 +136,6 @@ class Incoming extends CI_Controller {
 				if($beratvolume <= 10){$beratbayar = 10;}else{$beratbayar = $beratvolume;}
 			}
 			
-			$tglmanifest = date('Y-m-d');
 			
 			$this->load->model('incoming_model');
 			
