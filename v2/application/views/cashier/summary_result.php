@@ -1,11 +1,11 @@
 <div id='content'>
             	<h2>Summary Report</h2>
 				
-                <?php echo anchor('cashier/pdf_summary_result/' . $date, '<i class="icon-print"></i> Export PDF'); ?>
+                <?php echo anchor('cashier/pdf_summary_result/'.$startdate.'/'.$enddate, '<i class="icon-print"></i> Export PDF'); ?>
                 	
                     <table>
                     		<tr>
-                            	<td colspan="3" align="center"><strong><?php echo strtoupper(mdate("%d-%M-%Y", strtotime($date))); ?></strong></td>
+                            	<td colspan="3" align="center"><strong><?php echo strtoupper(mdate("%d-%M-%Y", strtotime($startdate)))." s/d ".strtoupper(mdate("%d-%M-%Y", strtotime($enddate))); ?></strong></td>
                             	<td colspan="6" align="center"><strong>INBOUND SUMMARY INCOME</strong></td>
                             </tr>	
                             <tr>
@@ -72,7 +72,7 @@
                     
                     <table>
                     		<tr>
-                            	<td colspan="3" align="center"><strong><?php echo strtoupper(mdate("%d-%M-%Y", strtotime($date))); ?></strong></td>
+                            	<td colspan="3" align="center"><strong><?php echo strtoupper(mdate("%d-%M-%Y", strtotime($startdate)))." s/d ".strtoupper(mdate("%d-%M-%Y", strtotime($enddate))); ?></strong></td>
                             	<td colspan="6" align="center"><strong>OUTBOUND SUMMARY INCOME</strong></td>
                             </tr>	
                             <tr>

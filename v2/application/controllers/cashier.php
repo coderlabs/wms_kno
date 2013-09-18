@@ -734,7 +734,7 @@ class Cashier extends CI_Controller {
 		
 		#model call
 		$this->load->model('cashier_model');
-		if($data['type'] == "incoming"){
+		if($data['type'] == "incoming"){			
 			$data['incoming'] = $this->cashier_model->my_balance_incoming($user, $startdate, $enddate);
 		} 
 		else if($data['type'] == "outgoing"){
@@ -744,7 +744,16 @@ class Cashier extends CI_Controller {
 			$data['void'] = $this->cashier_model->my_void($user, $startdate, $enddate);
 		}
 		else if($data['type'] == "total"){
-			$data['incoming'] = $this->cashier_model->my_summary_incoming_result($user, $startdate, $enddate);
+			# penentuan version incoming
+			if($startdate < '2013-08-02')
+			{
+				$typeincoming = 'v2';
+			}
+			else
+			{
+				$typeincoming = 'v3';
+			}
+			$data['incoming'] = $this->cashier_model->my_summary_incoming_result($user, $startdate, $enddate, $typeincoming);
 			$data['outgoing'] = $this->cashier_model->my_summary_outgoing_result($user, $startdate, $enddate);
 			$data['void'] = $this->cashier_model->my_summary_void_result($user, $startdate, $enddate);
 		}
@@ -893,11 +902,20 @@ class Cashier extends CI_Controller {
 		
 		$startdate = mdate("%Y-%m-%d", strtotime($this->uri->segment(4)));
 		$enddate = mdate("%Y-%m-%d", strtotime($this->uri->segment(5)));
+		$data['startdate'] = $startdate;
 		$data['enddate'] = $enddate;
-		
+		# penentuan version incoming
+		if($startdate < '2013-08-02')
+		{
+			$typeincoming = 'v2';
+		}
+		else
+		{
+			$typeincoming = 'v3';
+		}
 		#model call
 		$this->load->model('cashier_model');
-		$data['incoming'] = $this->cashier_model->my_summary_incoming_result($user, $startdate, $enddate);
+		$data['incoming'] = $this->cashier_model->my_summary_incoming_result($user, $startdate, $enddate, $typeincoming);
 		$data['outgoing'] = $this->cashier_model->my_summary_outgoing_result($user, $startdate, $enddate);
 		$data['void'] = $this->cashier_model->my_summary_void_result($user, $startdate, $enddate);
 		
@@ -928,11 +946,13 @@ class Cashier extends CI_Controller {
 	
 	function summary_result()
 	{
-		$date = mdate('%Y-%m-%d', strtotime($this->input->post('date')));
-		$data['date']=$date;
+		$startdate = mdate('%Y-%m-%d', strtotime($this->input->post('startdate')));
+		$data['startdate']=$startdate;
+		$enddate = mdate('%Y-%m-%d', strtotime($this->input->post('enddate')));
+		$data['enddate']=$enddate;
 		
 		# select type
-		if($date < '2013-08-02')
+		if($startdate < '2013-08-02')
 		{
 			$type = 'v2';
 		}
@@ -943,8 +963,8 @@ class Cashier extends CI_Controller {
 		
 		#model call
 		$this->load->model('cashier_model');
-		$data['incoming'] = $this->cashier_model->incoming_summary_income($date, $type);
-		$data['outgoing'] = $this->cashier_model->outgoing_summary_income($date);
+		$data['incoming'] = $this->cashier_model->incoming_summary_income($startdate, $enddate, $type);
+		$data['outgoing'] = $this->cashier_model->outgoing_summary_income($startdate, $enddate);
 		
 		#print_r($data);
 		$this->load->view('template/header');
@@ -956,11 +976,13 @@ class Cashier extends CI_Controller {
 	
 	function pdf_summary_result()
 	{
-		$date = mdate('%Y-%m-%d', strtotime($this->uri->segment(3)));
-		$data['date']=$date;
+		$startdate = mdate('%Y-%m-%d', strtotime($this->uri->segment(3)));
+		$data['startdate']=$startdate;
+		$enddate = mdate('%Y-%m-%d', strtotime($this->uri->segment(4)));
+		$data['enddate']=$enddate;
 		
 		# select type
-		if($date < '2013-08-02')
+		if($startdate < '2013-08-02')
 		{
 			$type = 'v2';
 		}
@@ -971,8 +993,8 @@ class Cashier extends CI_Controller {
 		
 		#model call
 		$this->load->model('cashier_model');
-		$data['incoming'] = $this->cashier_model->incoming_summary_income($date, $type);
-		$data['outgoing'] = $this->cashier_model->outgoing_summary_income($date);
+		$data['incoming'] = $this->cashier_model->incoming_summary_income($startdate,$enddate, $type);
+		$data['outgoing'] = $this->cashier_model->outgoing_summary_income($startdate,$enddate);
 		
 		
 		# Helper Load
@@ -980,7 +1002,7 @@ class Cashier extends CI_Controller {
 		$stream = TRUE; 
 		$papersize = 'legal'; 
 		$orientation = 'landscape';
-		$filename = 'summary-'.$date;
+		$filename = 'summary-'.$startdate.'-sd-'.$enddate;
 		$stn = 'kno';
 		$html = '';
 		$html = $this->load->view('cashier/pdf/pdf_summary_result', $data, true);
@@ -1000,11 +1022,13 @@ class Cashier extends CI_Controller {
 	
 	function reconciliation_result()
 	{
-		$date = mdate('%Y-%m-%d', strtotime($this->input->post('date')));
-		$data['date']=$date;
-		
+		$startdate = mdate('%Y-%m-%d', strtotime($this->input->post('startdate')));
+		$data['startdate']=$startdate;
+		$enddate = mdate('%Y-%m-%d', strtotime($this->input->post('enddate')));
+		$data['enddate']=$enddate;
+				
 		# select type
-		if($date < '2013-08-02')
+		if($startdate < '2013-08-02')
 		{
 			$type = 'v2';
 		}
@@ -1015,8 +1039,8 @@ class Cashier extends CI_Controller {
 		
 		#model call
 		$this->load->model('cashier_model');
-		$data['incoming'] = $this->cashier_model->incoming_summary_income($date, $type);
-		$data['outgoing'] = $this->cashier_model->outgoing_summary_income($date);
+		$data['incoming'] = $this->cashier_model->incoming_summary_income($startdate, $enddate, $type);
+		$data['outgoing'] = $this->cashier_model->outgoing_summary_income($startdate, $enddate);
 		
 		
 		$this->load->view('template/header');
@@ -1028,11 +1052,13 @@ class Cashier extends CI_Controller {
 	
 	function pdf_reconciliation_result()
 	{
-		$date = mdate('%Y-%m-%d', strtotime($this->uri->segment(3)));
-		$data['date']=$date;
+		$startdate = mdate('%Y-%m-%d', strtotime($this->uri->segment(3)));
+		$data['startdate']=$startdate;
+		$enddate = mdate('%Y-%m-%d', strtotime($this->uri->segment(4)));
+		$data['enddate']=$enddate;
 		
 		# select type
-		if($date < '2013-08-02')
+		if($startdate < '2013-08-02')
 		{
 			$type = 'v2';
 		}
@@ -1043,8 +1069,8 @@ class Cashier extends CI_Controller {
 		
 		#model call
 		$this->load->model('cashier_model');
-		$data['incoming'] = $this->cashier_model->incoming_summary_income($date, $type);
-		$data['outgoing'] = $this->cashier_model->outgoing_summary_income($date);
+		$data['incoming'] = $this->cashier_model->incoming_summary_income($startdate, $enddate, $type);
+		$data['outgoing'] = $this->cashier_model->outgoing_summary_income($startdate, $enddate);
 		
 		
 		# Helper Load
@@ -1052,7 +1078,7 @@ class Cashier extends CI_Controller {
 		$stream = TRUE; 
 		$papersize = 'legal'; 
 		$orientation = 'potrait';
-		$filename = 'summary-'.$date;
+		$filename = 'summary-'.$startdate.'-sd-'.$enddate;
 		$stn = 'kno';
 		$html = '';
 		$html = $this->load->view('cashier/pdf/pdf_reconciliation_result', $data, true);

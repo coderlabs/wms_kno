@@ -48,11 +48,11 @@ table.gridtable td {
 
             	<p><strong>PT Gapura Angkasa - PT Angkasa Pura II (persero)</strong></p>
                 <p><strong>Domestic Cargo Warehouse - Kualanamu International Airport</strong></p>
-                <p><strong>Income Summary Report - <?php echo strtoupper(mdate("%d %F %Y", strtotime($date))); ?></strong></p>
+                <p><strong>Income Summary Report - <?php echo strtoupper(mdate("%d %F %Y", strtotime($startdate)))." - ".strtoupper(mdate("%d %F %Y", strtotime($enddate))); ?></strong></p>
 					
                     <table  border="1" class="gridtable" width="1024px">
                     		<tr>
-                            	<td colspan="3" width="30%"><div align="center"><strong><?php echo strtoupper(mdate("%d-%M-%Y", strtotime($date))); ?></strong></div></td>
+                            	<td colspan="3" width="30%"><div align="center"><strong><?php echo strtoupper(mdate("%d-%M-%Y", strtotime($startdate)))." - ".strtoupper(mdate("%d-%M-%Y", strtotime($enddate))); ?></strong></div></td>
                             	<td colspan="6" width="70%"><div align="center"><strong>INBOUND SUMMARY INCOME</strong></div></td>
                             </tr>	
                             <tr>
@@ -118,7 +118,7 @@ table.gridtable td {
                     
                      <table  border="1" class="gridtable" width="1024px">
                     		<tr>
-                            	<td colspan="3" width="30%"><div align="center"><strong><?php echo strtoupper(mdate("%d-%M-%Y", strtotime($date))); ?></strong></div></td>
+                            	<td colspan="3" width="30%"><div align="center"><strong><?php  echo strtoupper(mdate("%d-%M-%Y", strtotime($startdate)))." - ".strtoupper(mdate("%d-%M-%Y", strtotime($enddate))); ?></strong></div></td>
                             	<td colspan="6" width="70%"><div align="center"><strong>OUTBOUND SUMMARY INCOME</strong></div></td>
                             </tr>	
                            <tr>

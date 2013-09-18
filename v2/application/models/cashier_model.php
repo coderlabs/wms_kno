@@ -435,21 +435,39 @@ class Cashier_model extends CI_Model {
 		return $query->result();
 	 }
 	 
-	 public function my_summary_incoming_result($user,$startdate,$enddate)
+	 public function my_summary_incoming_result($user,$startdate,$enddate,$type)
 	 {
+		if($type == 'v2')
+		{
+		
 		$query = ("
 		SELECT * , SUM(sewagudang) as whc, SUM(cargo_charge) as csc, SUM(ppn) as ppn, SUM(administrasi) as adm, SUM(total_biaya) as totbiaya, SUM(totalkoli) as koli, ROUND(SUM(totalberatbayar),1) as kilo FROM deliverybill as db
 			JOIN ( SELECT * from isimanifestin WHERE isvoid = 0) as isi  ON isi.no_smu = db.nosmu
 			JOIN ( SELECT *, airline as in_airline from manifestin WHERE isvoid = 0) as mani ON mani.id_manifestin = isi.id_manifestin
 			WHERE db.isvoid = 0
 			AND db.user = '".$user."' 
-			AND (date(db.tglbayar) >= '".$startdate."') 	
-			AND (date(db.tglbayar) <= '".$enddate."')
+			AND DATE(db.tglbayar) >= '" . $startdate . "'
+			AND DATE(db.tglbayar) <= '" . $enddate . "'
 			AND db.status = 0
 			GROUP BY mani.in_airline
 		");
 		
-		 $query = $this->db->query($query);
+		}
+		else
+		{
+		$query = ("
+			SELECT *, SUM(sewagudang) as whc, SUM(cargo_charge) as csc, SUM(ppn) as ppn, SUM(administrasi) as adm, SUM(total_biaya) as totbiaya, SUM(in_koli) as koli, SUM(in_berat_bayar) as kilo FROM deliverybill as db
+			JOIN ( SELECT * from in_dtbarang WHERE in_status_bayar = 'yes' ) as indt ON indt.in_btb = db.no_smubtb
+			WHERE db.isvoid = 0
+			AND db.user = '".$user."' 
+			AND DATE(db.tglbayar) >= '" . $startdate . "'
+			AND DATE(db.tglbayar) <= '" . $enddate . "'
+			AND db.status = 0
+			GROUP BY indt.in_airline
+		 ");
+		}
+		
+		$query = $this->db->query($query);
 		return $query->result();
 	 }
 	 
@@ -486,16 +504,11 @@ class Cashier_model extends CI_Model {
 		return $query->result();
 	 }
 	 
-	 public function incoming_summary_income($date, $type)
+	 #############################################
+	 ### In Out Summary Income (start-enddate) ###
+	 #############################################
+	 public function incoming_summary_income($startdate, $enddate , $type)
 	 {
-		 /*$query = ("
-		 SELECT *, SUM(sewagudang) as whc, SUM(cargo_charge) as csc, SUM(ppn) as ppn, SUM(administrasi) as adm, SUM(total_biaya) as totbiaya FROM deliverybill as db
-		JOIN ( SELECT * from in_dtbarang WHERE in_status_bayar = 'yes' ) as indt ON indt.in_btb = db.no_smubtb
-		WHERE db.isvoid = 0
-		AND DATE(db.tglbayar) = '" . $date . "'
-		AND db.status = 0
-		GROUP BY indt.in_airline
-	    ");*/
 		if($type == 'v2')
 		{
 		
@@ -504,30 +517,23 @@ class Cashier_model extends CI_Model {
 			JOIN ( SELECT * from isimanifestin WHERE isvoid = 0) as isi  ON isi.no_smu = db.nosmu
 			JOIN ( SELECT *, airline as in_airline from manifestin WHERE isvoid = 0) as mani ON mani.id_manifestin = isi.id_manifestin
 			WHERE db.isvoid = 0
-			AND DATE(db.tglbayar) = '" . $date . "'
+			AND DATE(db.tglbayar) >= '" . $startdate . "'
+			AND DATE(db.tglbayar) <= '" . $enddate . "'
 			AND db.status = 0
 			GROUP BY mani.in_airline
 		");
-		/*$query = ("
-			SELECT *, SUM(sewagudang) as whc, SUM(cargo_charge) as csc, SUM(ppn) as ppn, SUM(administrasi) as adm, SUM(total_biaya) as totbiaya, SUM(kolidatang) as koli, ROUND(SUM(beratdatang),1) as kilo FROM deliverybill as db
-			JOIN ( SELECT * from isimanifestin ) as isi  ON isi.no_smu = db.nosmu
-			JOIN ( SELECT * from manifestin) as mani ON mani.id_manifestin = isi.id_manifestin
-			JOIN ( SELECT * from breakdown) as bd ON bd.id_isimanifestin = isi.id_isimanifestin
-			WHERE db.isvoid = 0
-			AND DATE(db.tglbayar) = '" . $date . "'
-			AND db.status = 0
-			GROUP BY mani.airline
-			");*/
+		
 		}
 		else
 		{
 		$query = ("
-		SELECT *, SUM(sewagudang) as whc, SUM(cargo_charge) as csc, SUM(ppn) as ppn, SUM(administrasi) as adm, SUM(total_biaya) as totbiaya, SUM(in_koli) as koli, SUM(in_berat_bayar) as kilo FROM deliverybill as db
-		JOIN ( SELECT * from in_dtbarang WHERE in_status_bayar = 'yes' ) as indt ON indt.in_btb = db.no_smubtb
-		WHERE db.isvoid = 0
-		AND DATE(db.tglbayar) = '" . $date . "'
-		AND db.status = 0
-		GROUP BY indt.in_airline
+			SELECT *, SUM(sewagudang) as whc, SUM(cargo_charge) as csc, SUM(ppn) as ppn, SUM(administrasi) as adm, SUM(total_biaya) as totbiaya, SUM(in_koli) as koli, SUM(in_berat_bayar) as kilo FROM deliverybill as db
+			JOIN ( SELECT * from in_dtbarang WHERE in_status_bayar = 'yes' ) as indt ON indt.in_btb = db.no_smubtb
+			WHERE db.isvoid = 0
+			AND DATE(db.tglbayar) >= '" . $startdate . "'
+			AND DATE(db.tglbayar) <= '" . $enddate . "'
+			AND db.status = 0
+			GROUP BY indt.in_airline
 		 ");
 		}
 		
@@ -535,22 +541,14 @@ class Cashier_model extends CI_Model {
 		return $query->result();
 	 }
 	 
-	 public function outgoing_summary_income($date)
+	 public function outgoing_summary_income($startdate, $enddate)
 	 {
-		 /*$query = ("
-		 SELECT *, SUM(sewagudang) as whc, SUM(cargo_charge) as csc, SUM(ppn) as ppn, SUM(administrasi) as adm, SUM(total_biaya) as totbiaya FROM deliverybill as db
-		JOIN ( SELECT * from out_dtbarang_h WHERE status_bayar = 'yes' ) as outdt ON outdt.btb_nobtb = db.no_smubtb
-		WHERE db.isvoid = 0
-		AND DATE(db.tglbayar) = '" . $date . "'
-		AND db.status = 1
-		GROUP BY outdt.airline
-	    ");*/
-		
 		$query = ("
 		SELECT *, SUM(sewagudang) as whc, SUM(cargo_charge) as csc, SUM(ppn) as ppn, SUM(administrasi) as adm, SUM(total_biaya) as totbiaya, SUM(btb_totalkoli) as koli, ROUND(SUM(btb_totalberatbayar),1) as kilo FROM deliverybill as db
 		JOIN ( SELECT * from out_dtbarang_h WHERE status_bayar = 'yes' AND isvoid = 0 ) as outdt ON outdt.btb_nobtb = db.no_smubtb
 		WHERE db.isvoid = 0
-		AND DATE(db.tglbayar) = '" . $date . "'
+		AND DATE(db.tglbayar) >= '" . $startdate . "'
+		AND DATE(db.tglbayar) <= '" . $enddate . "'
 		AND db.status = 1
 		GROUP BY outdt.airline
 		");
@@ -558,6 +556,8 @@ class Cashier_model extends CI_Model {
 		 $query = $this->db->query($query);
 		return $query->result();
 	 }
+	########################################
+	
 	 
 	 public function get_cashier()
 	 {
@@ -656,6 +656,83 @@ class Cashier_model extends CI_Model {
 		return $query->num_rows();
 	}
 	/* Akhir Delivery Bill */
+	
+	
+	/*Query incoming outgoing income summary */
+	/*
+	public function incoming_summary_income($date, $type)
+	 {
+		 /*$query = ("
+		 SELECT *, SUM(sewagudang) as whc, SUM(cargo_charge) as csc, SUM(ppn) as ppn, SUM(administrasi) as adm, SUM(total_biaya) as totbiaya FROM deliverybill as db
+		JOIN ( SELECT * from in_dtbarang WHERE in_status_bayar = 'yes' ) as indt ON indt.in_btb = db.no_smubtb
+		WHERE db.isvoid = 0
+		AND DATE(db.tglbayar) = '" . $date . "'
+		AND db.status = 0
+		GROUP BY indt.in_airline
+	    ");*/
+	/*	if($type == 'v2')
+		{
+		
+		$query = ("
+		SELECT * , SUM(sewagudang) as whc, SUM(cargo_charge) as csc, SUM(ppn) as ppn, SUM(administrasi) as adm, SUM(total_biaya) as totbiaya, SUM(totalkoli) as koli, ROUND(SUM(totalberatbayar),1) as kilo FROM deliverybill as db
+			JOIN ( SELECT * from isimanifestin WHERE isvoid = 0) as isi  ON isi.no_smu = db.nosmu
+			JOIN ( SELECT *, airline as in_airline from manifestin WHERE isvoid = 0) as mani ON mani.id_manifestin = isi.id_manifestin
+			WHERE db.isvoid = 0
+			AND DATE(db.tglbayar) = '" . $date . "'
+			AND db.status = 0
+			GROUP BY mani.in_airline
+		");
+		/*$query = ("
+			SELECT *, SUM(sewagudang) as whc, SUM(cargo_charge) as csc, SUM(ppn) as ppn, SUM(administrasi) as adm, SUM(total_biaya) as totbiaya, SUM(kolidatang) as koli, ROUND(SUM(beratdatang),1) as kilo FROM deliverybill as db
+			JOIN ( SELECT * from isimanifestin ) as isi  ON isi.no_smu = db.nosmu
+			JOIN ( SELECT * from manifestin) as mani ON mani.id_manifestin = isi.id_manifestin
+			JOIN ( SELECT * from breakdown) as bd ON bd.id_isimanifestin = isi.id_isimanifestin
+			WHERE db.isvoid = 0
+			AND DATE(db.tglbayar) = '" . $date . "'
+			AND db.status = 0
+			GROUP BY mani.airline
+			");*/
+	/*	}
+		else
+		{
+		$query = ("
+		SELECT *, SUM(sewagudang) as whc, SUM(cargo_charge) as csc, SUM(ppn) as ppn, SUM(administrasi) as adm, SUM(total_biaya) as totbiaya, SUM(in_koli) as koli, SUM(in_berat_bayar) as kilo FROM deliverybill as db
+		JOIN ( SELECT * from in_dtbarang WHERE in_status_bayar = 'yes' ) as indt ON indt.in_btb = db.no_smubtb
+		WHERE db.isvoid = 0
+		AND DATE(db.tglbayar) = '" . $date . "'
+		AND db.status = 0
+		GROUP BY indt.in_airline
+		 ");
+		}
+		
+		 $query = $this->db->query($query);
+		return $query->result();
+	 }
+	 
+	 public function outgoing_summary_income($date)
+	 {
+		 /*$query = ("
+		 SELECT *, SUM(sewagudang) as whc, SUM(cargo_charge) as csc, SUM(ppn) as ppn, SUM(administrasi) as adm, SUM(total_biaya) as totbiaya FROM deliverybill as db
+		JOIN ( SELECT * from out_dtbarang_h WHERE status_bayar = 'yes' ) as outdt ON outdt.btb_nobtb = db.no_smubtb
+		WHERE db.isvoid = 0
+		AND DATE(db.tglbayar) = '" . $date . "'
+		AND db.status = 1
+		GROUP BY outdt.airline
+	    ");*/
+		
+	/*	$query = ("
+		SELECT *, SUM(sewagudang) as whc, SUM(cargo_charge) as csc, SUM(ppn) as ppn, SUM(administrasi) as adm, SUM(total_biaya) as totbiaya, SUM(btb_totalkoli) as koli, ROUND(SUM(btb_totalberatbayar),1) as kilo FROM deliverybill as db
+		JOIN ( SELECT * from out_dtbarang_h WHERE status_bayar = 'yes' AND isvoid = 0 ) as outdt ON outdt.btb_nobtb = db.no_smubtb
+		WHERE db.isvoid = 0
+		AND DATE(db.tglbayar) = '" . $date . "'
+		AND db.status = 1
+		GROUP BY outdt.airline
+		");
+		
+		 $query = $this->db->query($query);
+		return $query->result();
+	 }
+	 */
 }
 
 /* End of file cashier.php */
