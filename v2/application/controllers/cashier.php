@@ -335,6 +335,10 @@ class Cashier extends CI_Controller {
 				
 				if($durasi_aktual <= $minhari )
 				{
+					if ($durasi_aktual == 0)
+					{
+						$durasi_aktual = 1;
+					}
 					$durasi_bayar = 1;
 				}
 				else

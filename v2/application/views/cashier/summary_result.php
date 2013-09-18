@@ -37,6 +37,7 @@
 					$tot_sub_total_in = $tot_sub_total_in + $items->whc+$items->csc+$items->adm;
 					$tot_ppn_in = $tot_ppn_in + $items->ppn;
 					$in_grand_total = $in_grand_total + $items->totbiaya;
+					
 					?>
     						
                             

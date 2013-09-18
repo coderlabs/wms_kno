@@ -45,7 +45,8 @@ class Incoming_model extends CI_Model {
 		$query = " 
 				SELECT * FROM in_breakdown as inbd
 				WHERE inbd.inb_no_smu = '$smu'
-				AND DATE(inbd.inb_instore) = '$date' ";
+				AND DATE(inbd.inb_instore) = '$date' 
+				AND inbd.inb_status_void = 'no'";
 		$query = $this->db->query($query);
 		return $query->num_rows();
 	}
