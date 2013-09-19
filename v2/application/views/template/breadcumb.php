@@ -111,7 +111,7 @@
               <!-- supervisor --> 
               <?php } ?>
 			  
-			  <?php if($session_data['level'] != 'admin' AND $session_data['level'] != 'supervisor'){ ?>
+			  <?php if(isset($session_data['level']) AND $session_data['level'] != 'admin' AND $session_data['level'] != 'supervisor'){ ?>
               <!-- user setting --> 
               <li class="dropdown">
                 <a href="#" id="drop2" role="button" class="dropdown-toggle" data-toggle="dropdown">User <b class="caret"></b></a>

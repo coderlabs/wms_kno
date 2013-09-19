@@ -94,8 +94,8 @@ table.gridtable td {
                         </tr>
                         <?php endforeach; ?>
                         <tr>
-							<td colspan="11"></td>
-                            <td colspan="2">Rp. <?php #echo number_format($tot_void, 0, ',', '.'); ?></td>
+							<td colspan="12"></td>
+                            <td colspan="1"> <?php #echo number_format($tot_void, 0, ',', '.'); ?></td>
                       	</tr>
                     </table>
                     

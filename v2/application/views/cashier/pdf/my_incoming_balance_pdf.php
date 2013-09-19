@@ -73,25 +73,28 @@ table.gridtable td {
 						$tot_in=$tot_in+$row_in->total_biaya;
 						?>
                			<tr>
-                            <td><div align="center"><?php echo strtoupper($row_void->no_smubtb); ?></div></td>
-                            <td><div align="center"><?php echo strtoupper($row_void->nosmu); ?></div></td>
-                            <td><div align="center"><?php echo strtoupper($row_void->btb_totalkoli); ?></div></td>
-                            <td><div align="right"><?php echo strtoupper($row_void->btb_totalberat); ?></div></td>
-                            <td><div align="right"><?php echo strtoupper($row_void->btb_totalberatbayar); ?></div></td>
-                            <td><div align="right"><?php echo strtoupper($row_void->hari); ?></div></td>
-                            <td><div align="right"><?php echo strtoupper($row_void->sewagudang); ?></div></td>
-                            <td><div align="right"><?php echo strtoupper($row_void->cargo_charge); ?></div></td>
-                            <td><div align="right"><?php echo strtoupper($row_void->administrasi); ?></div></td>
-                            <td><div align="right"><?php echo strtoupper($row_void->sewagudang_after_discount+$row_void->administrasi); ?></div></td>
-                            <td><div align="right"><?php echo strtoupper($row_void->ppn); ?></div></td>
-                            <td><div align="right"><?php echo strtoupper($row_void->total_biaya); ?></div></td>
+                            <td><?php echo mdate("%d-%m-%Y",strtotime($row_in->tglbayar)); ?></td>
+							<td><div align="center"><?php echo strtoupper($row_in->no_smubtb); ?></div></td>
+                            <td><div align="center"><?php echo strtoupper($row_in->nosmu); ?></div></td>
+                            <td><div align="center"><?php echo strtoupper($row_in->in_koli); ?></div></td>
+                            <td><div align="right"><?php echo strtoupper($row_in->in_berat_datang); ?></div></td>
+                            <td><div align="right"><?php echo strtoupper($row_in->in_berat_bayar); ?></div></td>
+                            <td><div align="right"><?php echo strtoupper($row_in->hari); ?></div></td>
+                            <td><div align="right"><?php echo strtoupper($row_in->sewagudang); ?></div></td>
+                            <td><div align="right"><?php echo strtoupper($row_in->cargo_charge); ?></div></td>
+                            <td><div align="right"><?php echo strtoupper($row_in->administrasi); ?></div></td>
+                            <td><div align="right"><?php echo strtoupper($row_in->sewagudang_after_discount+$row_in->administrasi); ?></div></td>
+                            <td><div align="right"><?php echo strtoupper($row_in->ppn); ?></div></td>
+                            <td><div align="right"><?php echo strtoupper($row_in->total_biaya); ?></div></td>
                         </tr>
                         <?php endforeach; ?>
                         <tr>
-							<td colspan="11"></td>
-                            <td colspan="2">Rp. <?php echo number_format($tot_in, 0, ',', '.'); ?></td>
+							<td colspan="12"></td>
+                            <td colspan="1"><div align="right">Rp. <?php echo number_format($tot_in, 0, ',', '.'); ?></div></td>
                       	</tr>
                     </table>
+					
+				
               
                     
                    

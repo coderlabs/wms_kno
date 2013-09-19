@@ -832,10 +832,10 @@ class Cashier extends CI_Controller {
 		$orientation = 'landscape';
 		$filename = 'lap-incoming-kasir-'.$user. '-'.$startdate. ' sd '.$enddate;
 		$stn = 'kno';
-		
 		$html = $this->load->view('cashier/pdf/my_incoming_balance_pdf', $data, true);
      	pdf_create($html, $filename, $stream, $papersize, $orientation, $stn);
 		$full_filename = $filename . '.pdf';
+		
 	}
 	function my_outgoing_balance_detail_pdf_result()
 	{
