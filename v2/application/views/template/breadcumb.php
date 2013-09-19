@@ -110,6 +110,20 @@
               </ul>
               <!-- supervisor --> 
               <?php } ?>
+			  
+			  <?php if($session_data['level'] != 'admin' AND $session_data['level'] != 'supervisor'){ ?>
+              <!-- user setting --> 
+              <li class="dropdown">
+                <a href="#" id="drop2" role="button" class="dropdown-toggle" data-toggle="dropdown">User <b class="caret"></b></a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
+                  <li role="presentation"><?php echo anchor('user','Pengaturan Akun'); ?></li>
+                  <li role="presentation" class="divider"></li>
+				</ul>
+              </li>
+              </ul>
+              <!-- user setting --> 
+              <?php } ?>
+			  
               
               <ul class="nav navbar-nav pull-right">
               <li>

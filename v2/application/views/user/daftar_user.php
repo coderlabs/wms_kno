@@ -21,7 +21,13 @@
             <td><?php echo $row->jabatan; ?></td>
             <td><?php echo $row->level; ?></td>
             <td><?php echo $row->nipp; ?></td>
-			<td><?php echo anchor('user/edit/'.$row->id_user,'Edit')." --- ".anchor('user/ganti_password/'.$row->id_user,'Ganti Password')." --- ".anchor('user/delete_user/'.$row->id_user,'Delete','onclick="return confirm(\' Anda yakin akan menghapus '.$row->id_user.' ? \')"'); ?>
+			<td>
+			<?php echo anchor('user/edit/'.$row->id_user,'Edit')." --- ".anchor('user/ganti_password/'.$row->id_user,'Ganti Password');?>
+			<?php 
+				if(($level_user =='admin') OR ($level_user =='supervisor')){
+					echo " --- ".anchor('user/delete_user/'.$row->id_user,'Delete','onclick="return confirm(\' Anda yakin akan menghapus '.$row->id_user.' ? \')"'); 
+				}
+			?>
 			</td>
         </tr>
     <?php } ?>

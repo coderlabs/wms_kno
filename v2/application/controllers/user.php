@@ -35,19 +35,30 @@ class User extends CI_Controller {
     			redirect('login');
 			}
 		}
-		
+		/*
 		$session_data_user = $this->session->userdata('logged_in');
+		
 		if(($session_data_user['level'] != 'admin') AND ($session_data_user['level'] != 'supervisor'))
 		{
 			redirect('dashboard');
 		}
+		*/
 	} 
 
 	public function index()
 	{
 		$this->load->model('user_model');
-		$data['result'] = $this->user_model->get_all_user();
 		
+		$session_data_user = $this->session->userdata('logged_in');
+		$id_user = $session_data_user['id_user'];
+		
+		if(($session_data_user['level'] != 'admin') AND ($session_data_user['level'] != 'supervisor'))
+		{
+			$data['result'] =  $this->user_model->get_user_by_id($id_user);
+		} else {
+			$data['result'] = $this->user_model->get_all_user();
+		}
+		$data['level_user'] = $session_data_user['level'];//level user yang sedang login
 		#view call
 		$this->load->view('template/header');
 		$this->load->view('template/breadcumb');
