@@ -813,7 +813,7 @@ class Cashier extends CI_Controller {
 	{
 		# incoming
 		/*$user = $this->session->userdata('logged_in');*/
-		$user = $this->uri->segment(3);
+		$user = str_replace('%20',' ',$this->uri->segment(3));
 		$data['user'] = $user;
 		
 		$startdate = mdate("%Y-%m-%d", strtotime($this->uri->segment(4)));
@@ -841,7 +841,7 @@ class Cashier extends CI_Controller {
 	{
 		# incoming
 		/*$user = $this->session->userdata('logged_in');*/
-		$user = $this->uri->segment(3);
+		$user = str_replace('%20',' ',$this->uri->segment(3));
 		$data['user'] = $user;
 		
 		$startdate = mdate("%Y-%m-%d", strtotime($this->uri->segment(4)));
@@ -869,7 +869,7 @@ class Cashier extends CI_Controller {
 	{
 		# incoming
 		/*$user = $this->session->userdata('logged_in');*/
-		$user = $this->uri->segment(3);
+		$user = str_replace('%20',' ',$this->uri->segment(3));
 		$data['user'] = $user;
 		
 		$startdate = mdate("%Y-%m-%d", strtotime($this->uri->segment(4)));
@@ -897,7 +897,7 @@ class Cashier extends CI_Controller {
 	{
 		# incoming
 		/*$user = $this->session->userdata('logged_in');*/
-		$user = $this->uri->segment(3);
+		$user = str_replace('%20',' ',$this->uri->segment(3));
 		$data['user'] = $user;
 		
 		$startdate = mdate("%Y-%m-%d", strtotime($this->uri->segment(4)));
