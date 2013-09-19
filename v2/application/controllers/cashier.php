@@ -769,7 +769,7 @@ class Cashier extends CI_Controller {
 			$this->load->view('cashier/my_balance_outgoing_result', $data);
 		}
 		else if($data['type'] == 'void'){
-			$this->load->view('cashier/my_balance_outgoing_result', $data);
+			$this->load->view('cashier/my_balance_void_result', $data);
 		}
 		else if($data['type'] == 'total'){
 			$this->load->view('cashier/my_summary_result', $data);
