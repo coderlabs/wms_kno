@@ -198,23 +198,6 @@
                     
                     </table>
                     
-                    <table>
-                    	<tr>
-                        	<td align="center" colspan="10"><strong>L E G E N D</strong></td>
-                        </tr>
-                    	<tr>
-                        	<td align="center" colspan="3"><strong>Inbound</strong></td>
-                            <td align="center" colspan="3"><strong>Outbound</strong></td>
-                            <td align="center" colspan="3"><strong>Void</strong></td>
-                            <td align="center" colspan="3"><strong>Total</strong></td>
-                        </tr>
-                        <tr>
-                        	<td align="right" colspan="3"><strong><?php echo number_format($in_grand_total, 0, ',', '.'); ?></strong></td>
-                            <td align="right" colspan="3"><strong><?php echo number_format($out_grand_total, 0, ',', '.'); ?></strong></td>
-                            <td align="right" colspan="3"><strong><?php echo number_format($void_grand_total, 0, ',', '.'); ?></strong></td>
-                            <td align="right" colspan="3"><strong><?php echo number_format($in_grand_total+$out_grand_total, 0, ',', '.'); ?></strong></td>
-                        </tr>
-                    </table>
-                    
+                  
                     
 </div>

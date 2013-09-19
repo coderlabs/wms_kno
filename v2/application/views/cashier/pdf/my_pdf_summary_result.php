@@ -48,12 +48,12 @@ table.gridtable td {
 
             	<p><strong>PT Gapura Angkasa - PT Angkasa Pura II (persero)</strong></p>
                 <p><strong>Domestic Cargo Warehouse - Kualanamu International Airport</strong></p>
-                <p><strong>Income Summary Report - <?php echo strtoupper(mdate("%d %F %Y", strtotime($date))); ?></strong></p>
+                <p><strong>Income Summary Report - <?php echo strtoupper(mdate("%d %F %Y", strtotime($startdate)))." s/d ".strtoupper(mdate("%d %F %Y", strtotime($enddate))); ?></strong></p>
                 <p><strong>Cashier - <?php echo strtoupper($user); ?></strong></p>
 					
                     <table  border="1" class="gridtable" width="1024px">
                     		<tr>
-                            	<td colspan="3" width="30%"><div align="center"><strong><?php echo strtoupper(mdate("%d-%M-%Y", strtotime($date))); ?></strong></div></td>
+                            	<td colspan="3" width="30%"><div align="center"><strong><?php echo strtoupper(mdate("%d-%M-%Y", strtotime($startdate)))." s/d ".strtoupper(mdate("%d %F %Y", strtotime($enddate))); ?></strong></div></td>
                             	<td colspan="6" width="70%"><div align="center"><strong>INBOUND SUMMARY INCOME</strong></div></td>
                             </tr>	
                             <tr>
@@ -119,7 +119,7 @@ table.gridtable td {
                     
                      <table  border="1" class="gridtable" width="1024px">
                     		<tr>
-                            	<td colspan="3" width="30%"><div align="center"><strong><?php echo strtoupper(mdate("%d-%M-%Y", strtotime($date))); ?></strong></div></td>
+                            	<td colspan="3" width="30%"><div align="center"><strong><?php echo strtoupper(mdate("%d-%M-%Y", strtotime($startdate)))." s/d ".strtoupper(mdate("%d %F %Y", strtotime($enddate))); ?></strong></div></td>
                             	<td colspan="6" width="70%"><div align="center"><strong>OUTBOUND SUMMARY INCOME</strong></div></td>
                             </tr>	
                            <tr>
@@ -185,7 +185,7 @@ table.gridtable td {
 					
 					<table border="1" class="gridtable" width="1024px">
                     		<tr>
-                            	<td colspan="3" align="center"><strong><?php echo strtoupper(mdate("%d-%M-%Y", strtotime($date))); ?></strong></td>
+                            	<td colspan="3" align="center"><strong><?php echo strtoupper(mdate("%d-%M-%Y", strtotime($startdate)))." s/d ".strtoupper(mdate("%d %F %Y", strtotime($enddate))); ?></strong></td>
                             	<td colspan="4" align="center"><strong>VOID SUMMARY</strong></td>
                             </tr>	
                             <tr>
@@ -244,23 +244,7 @@ table.gridtable td {
                     
                     </table>
                     
-                    <table border="1" class="gridtable" width="1024px">
-                    	<tr>
-                        	<td align="center" colspan="12"><strong>L E G E N D</strong></td>
-                        </tr>
-                    	<tr>
-                        	<td align="center" colspan="3"><strong>Inbound</strong></td>
-                            <td align="center" colspan="3"><strong>Outbound</strong></td>
-                            <td align="center" colspan="3"><strong>Void</strong></td>
-                            <td align="center" colspan="3"><strong>Total</strong></td>
-                        </tr>
-                        <tr>
-                        	<td align="right" colspan="3"><strong><?php echo number_format($in_grand_total, 0, ',', '.'); ?></strong></td>
-                            <td align="right" colspan="3"><strong><?php echo number_format($out_grand_total, 0, ',', '.'); ?></strong></td>
-                            <td align="right" colspan="3"><strong><?php echo number_format($void_grand_total, 0, ',', '.'); ?></strong></td>
-                            <td align="right" colspan="3"><strong><?php echo number_format($in_grand_total+$out_grand_total, 0, ',', '.'); ?></strong></td>
-                        </tr>
-                    </table>
+                   
 
 </body>
 </html>
