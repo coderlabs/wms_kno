@@ -11,7 +11,7 @@
             <li><?php echo anchor('tracking/btb', 'BTB Tracking'); ?></li>
             
             
-              <?php if($session_data['level'] == 'kasir' OR $session_data['level'] == 'supervisor' OR $session_data['level'] == 'gp' OR $session_data['level'] == 'ap' OR $session_data['level'] == 'admin'){ ?>
+              <?php if($session_data['level'] == 'kasir' OR $session_data['level'] == 'supervisor' OR $session_data['level'] == 'gapura' OR $session_data['level'] == 'angkasa_pura' OR $session_data['level'] == 'admin'){ ?>
               <!-- kasir --> 	
               <li class="dropdown">
                 <a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">Kasir <b class="caret"></b></a>
