@@ -6,7 +6,10 @@
 							echo form_hidden('no_btb', $no_btb); 
 					?>
                     
-                      Alasan : <br/><input name="reason" size=100  type="text">
+                      
+					  Alasan : 
+					  <br/><input type="checkbox" value="1" name="status_kembali"> pembayaran dikembalikan
+					  <br/><input name="reason" size=100  type="text">
                       <?php echo form_submit('submit', 'Void' ); ?>
 					 
 </div>

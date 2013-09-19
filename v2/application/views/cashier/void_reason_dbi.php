@@ -11,7 +11,7 @@
 							else 
 							{
 								echo form_open('cashier/do_void_dbi/'.$no_btb.'/'.$no_db);
-								echo 'Alasan : <br/><input name="reason" size=100  type="text">';
+								echo 'Alasan : <br><input type="checkbox" value="1" name="status_kembali"> pembayaran dikembalikan<br/><input name="reason" size=100  type="text">';
 								echo form_submit('submit', 'Void' ); } 
 								echo form_close();
 							}

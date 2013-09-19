@@ -372,14 +372,28 @@ class Cashier_model extends CI_Model {
 	 
 	 function do_void_dbi($no_btb, $no_db, $user)
 	 {
+		if($this->input->post('status_kembali') == 1){
+			$status_kembali = " (uang kembali) ";
+		} else {
+			$status_kembali = " (uang tidak dikembalikan) ";
+		}
+		$keterangan = $this->input->post('reason');
+		
 		$this->db->update('in_dtbarang', array('in_status_bayar'=>'no'), array('in_btb'=>$no_btb));
-		$this->db->update('deliverybill', array('isvoid'=>'1', 'keterangan'=>$this->input->post('reason'),'voidby'=>$user, 'tglvoid' => date("Y-m-d H:i:s")), array('nodb'=>$no_db));
+		$this->db->update('deliverybill', array('isvoid'=>'1', 'keterangan'=>$keterangan.$status_kembali,'voidby'=>$user, 'tglvoid' => date("Y-m-d H:i:s")), array('nodb'=>$no_db));
 	 }
 	 
 	 function do_void_dbo($no_btb, $no_db, $user)
 	 {
-		$this->db->update('out_dtbarang_h', array('status_bayar'=>'no', 'posted'=>0), array('btb_nobtb'=>$no_btb));
-		$this->db->update('deliverybill', array('isvoid'=>'1', 'keterangan'=>$this->input->post('reason'),'voidby'=>$user, 'tglvoid' => date("Y-m-d H:i:s")), array('nodb'=>$no_db));
+		if($this->input->post('status_kembali') == 1){
+			$status_kembali = " (uang kembali) ";
+		} else {
+			$status_kembali = " (uang tidak dikembalikan) ";
+		}
+		$keterangan = $this->input->post('reason');
+		
+		$keterangan = $this->input->post('reason');$this->db->update('out_dtbarang_h', array('status_bayar'=>'no', 'posted'=>0), array('btb_nobtb'=>$no_btb));
+		$this->db->update('deliverybill', array('isvoid'=>'1', 'keterangan'=>$keterangan.$status_kembali,'voidby'=>$user, 'tglvoid' => date("Y-m-d H:i:s")), array('nodb'=>$no_db));
 	 }
 	 
 	 function cek_barang_instore($no_btb)
