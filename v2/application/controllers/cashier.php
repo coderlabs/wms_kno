@@ -865,6 +865,7 @@ class Cashier extends CI_Controller {
      	pdf_create($html, $filename, $stream, $papersize, $orientation, $stn);
 		$full_filename = $filename . '.pdf';
 	}
+	
 	function my_void_balance_detail_pdf_result()
 	{
 		# incoming
@@ -875,7 +876,7 @@ class Cashier extends CI_Controller {
 		$startdate = mdate("%Y-%m-%d", strtotime($this->uri->segment(4)));
 		$enddate = mdate("%Y-%m-%d", strtotime($this->uri->segment(5)));
 		$data['startdate'] = $startdate;
-		$data['enddate'] = $startdate;
+		$data['enddate'] = $enddate;
 		
 		#model call
 		$this->load->model('cashier_model');
@@ -886,12 +887,14 @@ class Cashier extends CI_Controller {
 		$stream = TRUE; 
 		$papersize = 'legal'; 
 		$orientation = 'landscape';
-		$filename = 'lap-void-kasir-'.$user. '-'.$date;
+		$filename = 'lap-void-kasir-'.$user. '-'.$startdate.' sd '.$enddate;
 		$stn = 'kno';
 		
 		$html = $this->load->view('cashier/pdf/my_void_balance_pdf', $data, true);
      	pdf_create($html, $filename, $stream, $papersize, $orientation, $stn);
 		$full_filename = $filename . '.pdf';
+		
+		
 	}
 	function my_balance_summary_pdf_result()
 	{

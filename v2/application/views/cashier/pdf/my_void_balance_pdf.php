@@ -69,15 +69,13 @@ table.gridtable td {
                             <td><div align="center"><strong>PPN</strong></div></td>
                             <td><div align="center"><strong>Total</strong></div></td>
                         </tr>
-                         <?php
+                         <?php 
 						$tot_void = 0; 
 						foreach($void as $row_void): 
 						$tot_void=$tot_void+$row_void->total_biaya;
 						?>
-               			
-        
-                        	
-                            <td><?php echo mdate("%d-%m-%Y",strtotime($row_void->tglbayar)); ?></td>
+               			<tr>	
+                        	<td><?php echo mdate("%d-%m-%Y",strtotime($row_void->tglbayar)); ?></td>
                             <td><?php echo strtoupper($row_void->no_smubtb); ?></td>
                             <td><?php echo strtoupper($row_void->nosmu); ?></td>
                             <td><?php #echo strtoupper($row_void->btb_totalkoli); ?></td>
@@ -97,6 +95,7 @@ table.gridtable td {
 							<td colspan="12"></td>
                             <td colspan="1"> <?php #echo number_format($tot_void, 0, ',', '.'); ?></td>
                       	</tr>
+						
                     </table>
                     
                    
