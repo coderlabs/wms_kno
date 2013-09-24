@@ -46,9 +46,9 @@ table.gridtable td {
 </head>
 <body>
 
-            	<p><strong>PT Gapura Angkasa - PT Angkasa Pura II (persero)</strong></p>
-                <p><strong>Domestic Cargo Warehouse - Kualanamu International Airport</strong></p>
-                <p><strong>Income Summary Report - <?php echo strtoupper(mdate("%d %F %Y", strtotime($startdate)))." - ".strtoupper(mdate("%d %F %Y", strtotime($enddate))); ?></strong></p>
+            	<strong>PT Gapura Angkasa - PT Angkasa Pura II (persero)</strong><br/>
+                <strong>Domestic Cargo Warehouse - Kualanamu International Airport</strong><br/>
+                <strong>Income Summary Report - <?php echo strtoupper(mdate("%d %F %Y", strtotime($startdate)))." - ".strtoupper(mdate("%d %F %Y", strtotime($enddate))); ?></strong><br/>
 					
                     <table  border="1" class="gridtable" width="1024px">
                     		<tr>
@@ -197,6 +197,26 @@ table.gridtable td {
                             <td colspan="3"><div align="center"><strong>Rp. <?php echo number_format($in_grand_total+$out_grand_total, 0, ',', '.'); ?></strong></div></td>
                         </tr>
                     </table>
+					<table border="0" width="1024px">
+						<tr>
+							<td rowspan="6" width="75%"></td><td><center>Kualanamu, <?php echo mdate('%d %M %Y', now());?></center></td>
+						</tr>
+						<tr>
+							<td><center>Koordinator Kasir</center></td>
+						</tr>
+						<tr>
+							<td><center>PT. Gapura Angkasa</center></td>
+						</tr>
+						<tr>
+							<td height="30px"></td>
+						</tr>
+						<tr>
+							<td><center>Ismawati</center></td>
+						</tr>
+						<tr>
+							<td><center>2991020</center></td>
+						</tr>
+					</table>
 
 </body>
 </html>
