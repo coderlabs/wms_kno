@@ -412,6 +412,30 @@ class Cashier extends CI_Controller {
 	public function save_payment()
 	{
 		$this->load->model('cashier_model');
+		$this->load->model('supervisor_model');
+		
+		# get agent balance
+		$balance = $this->supervisor_model->get_balance_by_name($this->input->post('agent'));
+		foreach ($balance as $row)
+		{
+			$last_balance = $row->balance;
+			$id_agent = $row->id_agent;
+		}
+		$payment = $this->input->post('payment_type');
+		if ( $payment == 'credit')
+		{
+			if ($balance == NULL)
+			{
+				redirect('cashier/new_receipt/balance_not_enough');
+			} else
+			if ($this->input->post('total_bayar') > $last_balance)
+			{
+				redirect('cashier/new_receipt/balance_not_enough');
+			} else {
+				$ket = 'kredit pembayaran '.$this->input->post('btb_no');
+				$this->supervisor_model->kredit_balance($id_agent, $last_balance, $ket);
+			}
+		} 
 		
 		# get user data
 		$user = $this->session->userdata('logged_in');

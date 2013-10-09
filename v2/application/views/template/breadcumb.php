@@ -105,6 +105,9 @@
                   <li role="presentation" class="divider"></li>
                   <li role="presentation"><?php echo anchor('cek_report/form_cek','Cek DB Incoming Manual'); ?></li>
                   <li role="presentation"><?php echo anchor('cek_report/form_generate','Cek DB Incoming By Query'); ?></li>
+				  <li role="presentation" class="divider"></li>
+                  <li role="presentation"><?php echo anchor('supervisor/','Add Agent'); ?></li>
+                  <li role="presentation"><?php echo anchor('supervisor/list_agent','Balance Agent'); ?></li>
                 </ul>
               </li>
               </ul>

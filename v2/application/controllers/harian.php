@@ -105,18 +105,31 @@ class Harian extends CI_Controller {
 		$airline = $this->input->post('airline');
 		$data['airline'] = $airline;
 		
+		$this->load->model('harian_model');
+		
 		# redirect model due database change on 01-08-2013
-		if($startdate < '2013-08-02')
+		if(($startdate < '2013-08-02') AND ($enddate >= '2013-08-02'))
+		{
+			$old_data_type = 'v2';
+			$new_data_type = 'v3';
+			$data_type = 'v4';
+			$new_enddate = mdate('%Y-%m-%d', strtotime('2013-08-01'));
+			$new_startdate = mdate('%Y-%m-%d', strtotime('2013-08-02'));
+			$data['detail_v2'] = $this->harian_model->details_incoming($startdate, $new_enddate, $airline, $old_data_type);
+			$data['detail_v3'] = $this->harian_model->details_incoming($new_startdate, $enddate, $airline, $new_data_type);
+		}
+		else if(($startdate < '2013-08-02') AND ($enddate < '2013-08-02'))
 		{
 			$data_type = 'v2';
+			$data['details'] = $this->harian_model->details_incoming($startdate, $enddate, $airline, $data_type);
 		}
-		else
+		else if(($startdate >= '2013-08-02') AND ($enddate >= '2013-08-02'))
 		{
 			$data_type = 'v3';
+			$data['details'] = $this->harian_model->details_incoming($startdate, $enddate, $airline, $data_type);
 		}
 		
-		$this->load->model('harian_model');
-		$data['details'] = $this->harian_model->details_incoming($startdate, $enddate, $airline, $data_type);
+		
 		#$data['total'] = $this->harian_model->get_total_incoming($date, $airline);
 		
 		if($data_type == 'v2')
@@ -126,11 +139,18 @@ class Harian extends CI_Controller {
 			$this->load->view('harian/details_incoming', $data);
 			$this->load->view('template/footer');
 		}
-		else
+		else if($data_type == 'v3')
 		{
 			$this->load->view('template/header');
 			$this->load->view('template/breadcumb');
 			$this->load->view('harian/v3_details_incoming', $data);
+			$this->load->view('template/footer');
+		}
+		else if($data_type == 'v4')
+		{
+			$this->load->view('template/header');
+			$this->load->view('template/breadcumb');
+			$this->load->view('harian/v4_details_incoming', $data);
 			$this->load->view('template/footer');
 		}
 
@@ -145,19 +165,29 @@ class Harian extends CI_Controller {
 		$enddate = $this->uri->segment(5, mdate("%Y-%m-%d", time()));
 		$data['startdate'] = $startdate;
 		$data['enddate'] = $enddate;
-    
+		
+		$this->load->model('harian_model');
 		# redirect model due database change on 01-08-2013
-		if($startdate < '2013-08-02')
+		if(($startdate < '2013-08-02') AND ($enddate >= '2013-08-02'))
+		{
+			$old_data_type = 'v2';
+			$new_data_type = 'v3';
+			$data_type = 'v4';
+			$new_enddate = mdate('%Y-%m-%d', strtotime('2013-08-01'));
+			$new_startdate = mdate('%Y-%m-%d', strtotime('2013-08-02'));
+			$data['detail_v2'] = $this->harian_model->details_incoming($startdate, $new_enddate, $airline, $old_data_type);
+			$data['detail_v3'] = $this->harian_model->details_incoming($new_startdate, $enddate, $airline, $new_data_type);
+		}
+		else if(($startdate < '2013-08-02') AND ($enddate < '2013-08-02'))
 		{
 			$data_type = 'v2';
+			$data['details'] = $this->harian_model->details_incoming($startdate, $enddate, $airline, $data_type);
 		}
-		else
+		else if(($startdate >= '2013-08-02') AND ($enddate >= '2013-08-02'))
 		{
 			$data_type = 'v3';
+			$data['details'] = $this->harian_model->details_incoming($startdate, $enddate, $airline, $data_type);
 		}
-	
-		$this->load->model('harian_model');
-		$data['details'] = $this->harian_model->details_incoming($startdate, $enddate, $airline, $data_type);
 		$data['total'] = $this->harian_model->get_total_incoming($startdate,$enddate, $airline);
 		
 		# call helper    
@@ -174,9 +204,13 @@ class Harian extends CI_Controller {
 			{
 				$html = $this->load->view('harian/details_pdf_incoming',$data, true); 
 			}
-			else
+			else if($data_type == 'v3')
 			{
 				$html = $this->load->view('harian/v3_details_pdf_incoming',$data, true); 
+			}
+			else if($data_type == 'v4')
+			{
+				$html = $this->load->view('harian/v4_details_pdf_incoming',$data, true); 
 			}
 		
 		pdf_create($html, $filename, $stream, $papersize, $orientation, $stn);
