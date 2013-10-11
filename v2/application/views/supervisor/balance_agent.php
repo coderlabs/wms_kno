@@ -25,6 +25,7 @@
             <th><strong>Kredit</strong></th>
             <th><strong>Balance</strong></th>
             <th><strong>Keterangan</strong></th>
+            <th><strong>Action</strong></th>
         </tr>
 	</thead>
 	<tbody>
@@ -37,6 +38,12 @@
             <td align="right"><?php echo number_format($row->kredit, 0, ',', '.'); ?></td>
             <td align="right"><?php echo number_format($row->balance, 0, ',', '.'); ?></td>
             <td align="right"><?php echo $row->ket; ?></td>
+            <td align="right"><?php 
+			if (substr($row->ket,0,6) == 'top up')
+				{
+					echo anchor('supervisor/void_balance/'.$row->id_balance,'void');
+				}
+			?></td>
         </tr>
 	<?php } ?>
 	</tbody>

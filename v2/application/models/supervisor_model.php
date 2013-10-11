@@ -107,6 +107,18 @@ class Supervisor_model extends CI_Model {
 		$this->db->insert('agent_balance', $data);
 	}
 	
+	public function void_balance($id_agent, $kredit, $last_balance, $ket)
+	{
+		$balance = $last_balance - $kredit;
+		$data = array(
+				'agent_id' => $id_agent,
+				'kredit' => $kredit,
+				'balance' => $balance,
+				'ket' => $ket
+			);
+		$this->db->insert('agent_balance', $data);
+	}
+	
 	public function get_agent_balance($id_agent, $num,$offset)
 	{
 		$query = " SELECT * 
@@ -142,6 +154,18 @@ class Supervisor_model extends CI_Model {
 				";
 		$query = $this->db->query($query);
 		return $query->result();
+	}
+	
+	public function get_transaction_id($id_balance)
+	{
+		$query = " SELECT * 
+					FROM  `agent_balance` 
+					WHERE  `id_balance` = '$id_balance'
+					ORDER BY `id_balance` DESC
+					LIMIT 1
+				";
+		$query = $this->db->query($query);
+		return $query->row();
 	}
 	
 	public function update_data_agent($id_agent,$data)

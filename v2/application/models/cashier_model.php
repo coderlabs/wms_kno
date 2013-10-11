@@ -383,6 +383,84 @@ class Cashier_model extends CI_Model {
 		$this->db->update('deliverybill', array('isvoid'=>'1', 'keterangan'=>$keterangan.$status_kembali,'voidby'=>$user, 'tglvoid' => date("Y-m-d H:i:s")), array('nodb'=>$no_db));
 	 }
 	 
+	 function get_payment_type($no_db)
+	 {
+		$this->db->where('nodb', $no_db);
+		$this->db->where('isvoid', '0');
+		$this->db->limit(1);
+		$this->db->order_by('id_deliverybill', 'DESC');
+		$payment = $this->db->get('deliverybill');
+		return $payment->row();
+	 }
+	 
+	 public function get_agent_in($no_btb)
+	{
+		 $query = ("
+		 SELECT * FROM in_dtbarang as indt
+		 LEFT JOIN ( SELECT * FROM btb_agent ) as agent ON agent.btb_agent = indt.in_agent
+		 JOIN ( SELECT * FROM agent_balance) as balance ON balance.agent_id = agent.id_agent
+			WHERE indt.in_btb = '" . $no_btb . "' 
+			AND indt.in_status_bayar = 'yes'
+			AND balance.ket LIKE '%$no_btb'
+			ORDER BY id_balance DESC
+			LIMIT 1
+		");
+		 $query = $this->db->query($query);
+		return $query->row();
+	}
+	
+	public function get_agent_out($no_btb)
+	{
+		 $query = ("
+		 SELECT * FROM out_dtbarang_h as outdt
+		 LEFT JOIN ( SELECT * FROM btb_agent ) as agent ON agent.btb_agent = outdt.btb_agent
+		 JOIN ( SELECT * FROM agent_balance) as balance ON balance.agent_id = agent.id_agent
+			WHERE outdt.btb_nobtb = '" . $no_btb . "' 
+			AND outdt.status_bayar = 'yes'
+			AND outdt.status_keluar = 'instore'
+			AND balance.ket LIKE '%$no_btb'
+			ORDER BY id_balance DESC
+			LIMIT 1
+		");
+		 $query = $this->db->query($query);
+		return $query->row();
+	}
+	
+	 function get_balance_agent($id_agent)
+	 {
+		$this->db->where('agent_id', $id_agent);
+		$this->db->order_by('id_balance','DESC');
+		$this->db->limit(1);
+		$balance = $this->db->get('agent_balance');
+		return $balance->row();
+	 }
+	 
+	 function do_void_balance_dbi($no_btb, $id_agent, $kredit, $balance)
+	 {
+		$ket = 'return cash void incoming btb '.$no_btb;
+		$last_balance = $balance + $kredit;
+		$data = array(
+				'agent_id' => $id_agent,
+				'debet' => $kredit,
+				'balance' => $last_balance,
+				'ket' => $ket
+			);
+		$this->db->insert('agent_balance', $data);
+	 }
+	 
+	 function do_void_balance_dbo($no_btb, $id_agent, $kredit, $balance)
+	 {
+		$ket = 'return cash void outgoing btb '.$no_btb;
+		$last_balance = $balance + $kredit;
+		$data = array(
+				'agent_id' => $id_agent,
+				'debet' => $kredit,
+				'balance' => $last_balance,
+				'ket' => $ket
+			);
+		$this->db->insert('agent_balance', $data);
+	 }
+	 
 	 function do_void_dbo($no_btb, $no_db, $user)
 	 {
 		if($this->input->post('status_kembali') == 1){

@@ -182,6 +182,27 @@ class Supervisor extends CI_Controller {
 		redirect('supervisor/list_agent');
 	}
 	
+	public function void_balance()
+	{
+		$id_balance = $this->uri->segment(3);
+		$this->load->model('supervisor_model');
+		
+		$transaction = $this->supervisor_model->get_transaction_id($id_balance);
+		$balance = $this->supervisor_model->get_last_balance($transaction->agent_id);
+		foreach($balance as $row_balance)
+		{
+			$last_balance = $row_balance->balance;
+		}
+		$ket = 'void top up tanggal '.substr($transaction->ket, 15,25); 
+		if ($last_balance < $transaction->debet)
+		{
+			redirect('supervisor/balance_agent/'.$transaction->agent_id);
+		} else {
+			$this->supervisor_model->void_balance($transaction->agent_id, $transaction->debet, $last_balance, $ket);
+			redirect('supervisor/balance_agent/'.$transaction->agent_id);
+		}
+	}
+	
 	
 }
 

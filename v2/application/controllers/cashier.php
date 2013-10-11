@@ -471,7 +471,6 @@ class Cashier extends CI_Controller {
 				'minimum_charge' => $this->input->post('minc'),
 				'minimum_weight' => $this->input->post('minw'),
 			);
-		
 		$this->cashier_model->save_db($data);
 		
 		# data preparing
@@ -699,9 +698,20 @@ class Cashier extends CI_Controller {
 		$no_btb = $this->uri->segment(3);
 		$no_db = $this->uri->segment(4);
 		
+		if($this->input->post('status_kembali') == 1){
+			$data = $this->cashier_model->get_agent_in($no_btb);
+			$credit = $this->cashier_model->get_payment_type($no_db);
+			if ($credit->id_carabayar == 'CREDIT')
+			{
+				if ($data != NULL)
+				{
+					$balance = $this->cashier_model->get_balance_agent($data->id_agent);
+					$this->cashier_model->do_void_balance_dbi($no_btb, $data->id_agent,$data->kredit, $balance->balance);
+				}
+			}
+		}
 		$this->cashier_model->do_void_dbi($no_btb, $no_db, $user);
-		
-		redirect('cashier');
+		redirect('cashier/new_receipt');
 	}
 	
 	public function void_dbo()
@@ -726,9 +736,21 @@ class Cashier extends CI_Controller {
 		$no_btb = $this->uri->segment(3);
 		$no_db = $this->uri->segment(4);
 		
+		if($this->input->post('status_kembali') == 1){
+			$data = $this->cashier_model->get_agent_out($no_btb);
+			$credit = $this->cashier_model->get_payment_type($no_db);
+			if ($credit->id_carabayar == 'CREDIT')
+			{
+				if ($data != NULL)
+				{
+					$balance = $this->cashier_model->get_balance_agent($data->id_agent);
+					$this->cashier_model->do_void_balance_dbo($no_btb, $data->id_agent,$data->kredit, $balance->balance);
+				}
+			}
+		}
 		$this->cashier_model->do_void_dbo($no_btb, $no_db, $user);
 		
-		redirect('cashier');
+		redirect('cashier/new_receipt');
 	}
 	
 	function my_balance()
