@@ -49,7 +49,7 @@
 	</tbody>
 	<tfoot>
 		<tr>
-        	<td colspan="9"><center><?php echo $this->pagination->create_links();?></center></td>
+        	<td colspan="9"><div class="pagination"><center><?php echo $this->pagination->create_links();?></center></div></td>
         </tr>
 	</tfoot>
    

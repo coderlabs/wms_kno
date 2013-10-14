@@ -70,9 +70,12 @@ class Harian_model extends CI_Model {
 		{
 			$query = ("
 			SELECT * FROM deliverybill as db
-			JOIN ( SELECT * from isimanifestin WHERE isvoid = 0) as isi  ON isi.no_smu = db.nosmu
-			JOIN ( SELECT * from manifestin WHERE airline = '" . $airline . "' AND isvoid = 0) as mani ON mani.id_manifestin = isi.id_manifestin
+			JOIN isimanifestin AS isi  ON isi.no_smu = db.nosmu
+			JOIN manifestin AS mani ON mani.id_manifestin = isi.id_manifestin
 			WHERE db.isvoid = 0
+			AND mani.airline = '" . $airline . "' 
+			AND mani.isvoid = 0
+			AND isi.isvoid = 0
 			AND DATE(db.tglbayar) >= '" . $startdate . "'
 			AND DATE(db.tglbayar) <= '" . $enddate . "'
 			AND db.status = 0
@@ -83,8 +86,10 @@ class Harian_model extends CI_Model {
 		{
 			$query = ("
 			SELECT * FROM deliverybill as db
-			JOIN ( SELECT * from in_dtbarang WHERE in_airline = '" . $airline . "' AND in_status_bayar = 'yes' ) as indt ON indt.in_btb = db.no_smubtb
+			JOIN in_dtbarang as indt ON indt.in_btb = db.no_smubtb
 			WHERE db.isvoid = 0
+			AND indt.in_airline = '" . $airline . "' 
+			AND indt.in_status_bayar = 'yes'
 			AND DATE(db.tglbayar) >= '" . $startdate . "'
 			AND DATE(db.tglbayar) <= '" . $enddate . "'
 			AND db.status = 0

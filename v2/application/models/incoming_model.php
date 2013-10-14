@@ -512,8 +512,9 @@ class Incoming_model extends CI_Model {
 	{
 		$query ="	
 		SELECT * FROM in_breakdown as bd
-		LEFT JOIN ( SELECT * from in_dtbarang WHERE in_status_bayar = 'no' ) as isi  ON isi.in_smu = bd.inb_no_smu
+		LEFT JOIN in_dtbarang AS isi  ON isi.in_smu = bd.inb_no_smu
 		WHERE inb_status_gudang = 'instore'
+		AND isi.in_status_bayar = 'no'
 		AND inb_status_void = 'no'
 				";
 		$query = $this->db->query($query);
@@ -525,8 +526,9 @@ class Incoming_model extends CI_Model {
 		$query ="	
 		
 		SELECT * FROM in_breakdown as bd
-		LEFT JOIN ( SELECT * from in_dtbarang WHERE in_status_bayar = 'no'  ) as isi  ON isi.in_smu = bd.inb_no_smu
+		LEFT JOIN in_dtbarang AS isi  ON isi.in_smu = bd.inb_no_smu
 		WHERE inb_status_gudang = 'instore'
+		AND isi.in_status_bayar = 'no'
 		AND inb_flight_date = '" . $date . "'
 		AND inb_status_void = 'no'
 		
@@ -540,8 +542,9 @@ class Incoming_model extends CI_Model {
 		$query ="	
 		
 		SELECT * FROM in_breakdown as bd
-		LEFT JOIN ( SELECT * from in_dtbarang WHERE in_status_bayar = 'no'  ) as isi  ON isi.in_smu = bd.inb_no_smu
+		LEFT JOIN in_dtbarang AS isi  ON isi.in_smu = bd.inb_no_smu
 		WHERE inb_status_gudang = 'outstore'
+		AND isi.in_status_bayar = 'no'
 		AND inb_flight_date = '" . $date . "'
 		AND inb_status_void = 'no'
 		
@@ -555,8 +558,10 @@ class Incoming_model extends CI_Model {
 		$query ="	
 		
 		SELECT * FROM in_breakdown as bd
-		LEFT JOIN ( SELECT * from in_dtbarang WHERE in_status_bayar = 'no'  AND in_btb = '') as isi  ON isi.in_smu = bd.inb_no_smu
+		LEFT JOIN in_dtbarang AS isi ON isi.in_smu = bd.inb_no_smu
 		WHERE inb_status_gudang = 'instore'
+		AND isi.in_status_bayar = 'no' 
+		AND isi.in_btb = ''
 		AND inb_status_void = 'no'
 		ORDER BY inb_update_on DESC
 				";
@@ -579,7 +584,7 @@ class Incoming_model extends CI_Model {
 		$query ="
 		SELECT *
 		FROM in_breakdown as users
-		LEFT JOIN ( SELECT * from in_dtbarang ) as isi  ON isi.in_inb_id = users.inb_id
+		LEFT JOIN in_dtbarang AS isi  ON isi.in_inb_id = users.inb_id
 		JOIN (
 			SELECT inb_no_smu
 			FROM in_breakdown

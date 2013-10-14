@@ -25,8 +25,8 @@ class Cashier_model extends CI_Model {
 	{
 		 $query = ("
 		 SELECT * FROM deliverybill as db
-		 JOIN  ( SELECT * FROM in_dtbarang ) as indt ON indt.in_btb = db.no_smubtb
-		 LEFT JOIN ( SELECT * FROM btb_agent ) as agent ON agent.btb_agent = indt.in_agent
+		 JOIN in_dtbarang AS indt ON indt.in_btb = db.no_smubtb
+		 LEFT JOIN btb_agent AS agent ON agent.btb_agent = indt.in_agent
 			WHERE db.nodb = '" . $no_db . "' 
 			AND db.isvoid = 0
 			ORDER BY db.nodb DESC
@@ -40,8 +40,8 @@ class Cashier_model extends CI_Model {
 	{
 		 $query = ("
 		 SELECT * FROM deliverybill as db
-		 JOIN  ( SELECT * FROM out_dtbarang_h ) as outdt ON outdt.btb_nobtb = db.no_smubtb
-		 LEFT JOIN ( SELECT * FROM btb_agent ) as agent ON agent.btb_agent = outdt.btb_agent
+		 JOIN  out_dtbarang_h AS outdt ON outdt.btb_nobtb = db.no_smubtb
+		 LEFT JOIN  btb_agent AS agent ON agent.btb_agent = outdt.btb_agent
 			WHERE db.nodb = '" . $no_db . "' 
 			AND db.isvoid = 0
 			ORDER BY db.nodb DESC
@@ -396,9 +396,9 @@ class Cashier_model extends CI_Model {
 	 public function get_agent_in($no_btb)
 	{
 		 $query = ("
-		 SELECT * FROM in_dtbarang as indt
-		 LEFT JOIN ( SELECT * FROM btb_agent ) as agent ON agent.btb_agent = indt.in_agent
-		 JOIN ( SELECT * FROM agent_balance) as balance ON balance.agent_id = agent.id_agent
+		 SELECT * FROM in_dtbarang AS indt
+		 LEFT JOIN btb_agent AS agent ON agent.btb_agent = indt.in_agent
+		 JOIN agent_balance AS balance ON balance.agent_id = agent.id_agent
 			WHERE indt.in_btb = '" . $no_btb . "' 
 			AND indt.in_status_bayar = 'yes'
 			AND balance.ket LIKE '%$no_btb'
@@ -413,8 +413,8 @@ class Cashier_model extends CI_Model {
 	{
 		 $query = ("
 		 SELECT * FROM out_dtbarang_h as outdt
-		 LEFT JOIN ( SELECT * FROM btb_agent ) as agent ON agent.btb_agent = outdt.btb_agent
-		 JOIN ( SELECT * FROM agent_balance) as balance ON balance.agent_id = agent.id_agent
+		 LEFT JOIN btb_agent AS agent ON agent.btb_agent = outdt.btb_agent
+		 JOIN agent_balance AS balance ON balance.agent_id = agent.id_agent
 			WHERE outdt.btb_nobtb = '" . $no_btb . "' 
 			AND outdt.status_bayar = 'yes'
 			AND outdt.status_keluar = 'instore'
@@ -489,7 +489,7 @@ class Cashier_model extends CI_Model {
 	 {
 		 $query = ("
 		 SELECT * FROM `deliverybill` as db
-		 JOIN  ( SELECT * FROM in_dtbarang ) as indt ON indt.in_btb = db.no_smubtb
+		 JOIN  in_dtbarang ON in_btb = db.no_smubtb
 			WHERE db.user = '" . $user . "' 
 			AND (DATE(db.tglbayar) >= '".$startdate."') 	
 			AND (DATE(db.tglbayar) <= '".$enddate."')
@@ -534,9 +534,10 @@ class Cashier_model extends CI_Model {
 		
 		$query = ("
 		SELECT * , SUM(sewagudang) as whc, SUM(cargo_charge) as csc, SUM(ppn) as ppn, SUM(administrasi) as adm, SUM(total_biaya) as totbiaya, SUM(totalkoli) as koli, ROUND(SUM(totalberatbayar),1) as kilo FROM deliverybill as db
-			JOIN ( SELECT * from isimanifestin WHERE isvoid = 0) as isi  ON isi.no_smu = db.nosmu
+			JOIN isimanifestin AS isi  ON isi.no_smu = db.nosmu
 			JOIN ( SELECT *, airline as in_airline from manifestin WHERE isvoid = 0) as mani ON mani.id_manifestin = isi.id_manifestin
 			WHERE db.isvoid = 0
+			AND isi.isvoid = 0
 			AND db.user = '".$user."' 
 			AND DATE(db.tglbayar) >= '" . $startdate . "'
 			AND DATE(db.tglbayar) <= '" . $enddate . "'
@@ -549,8 +550,9 @@ class Cashier_model extends CI_Model {
 		{
 		$query = ("
 			SELECT *, SUM(sewagudang) as whc, SUM(cargo_charge) as csc, SUM(ppn) as ppn, SUM(administrasi) as adm, SUM(total_biaya) as totbiaya, SUM(in_koli) as koli, SUM(in_berat_bayar) as kilo FROM deliverybill as db
-			JOIN ( SELECT * from in_dtbarang WHERE in_status_bayar = 'yes' ) as indt ON indt.in_btb = db.no_smubtb
+			JOIN in_dtbarang  AS indt ON indt.in_btb = db.no_smubtb
 			WHERE db.isvoid = 0
+			AND indt.in_status_bayar = 'yes'
 			AND db.user = '".$user."' 
 			AND DATE(db.tglbayar) >= '" . $startdate . "'
 			AND DATE(db.tglbayar) <= '" . $enddate . "'
@@ -567,8 +569,10 @@ class Cashier_model extends CI_Model {
 	 {
 		$query = ("
 		SELECT *, SUM(sewagudang) as whc, SUM(cargo_charge) as csc, SUM(ppn) as ppn, SUM(administrasi) as adm, SUM(total_biaya) as totbiaya, SUM(btb_totalkoli) as koli, ROUND(SUM(btb_totalberatbayar),1) as kilo FROM deliverybill as db
-		JOIN ( SELECT * from out_dtbarang_h WHERE status_bayar = 'yes' AND isvoid = 0 ) as outdt ON outdt.btb_nobtb = db.no_smubtb
+		JOIN out_dtbarang_h AS outdt ON outdt.btb_nobtb = db.no_smubtb
 		WHERE db.isvoid = 0
+		AND outdt.status_bayar = 'yes' 
+		AND outdt.isvoid = 0
 		AND db.user = '" . $user . "' 
 		AND (date(db.tglbayar) >= '".$startdate."') 	
 		AND (date(db.tglbayar) <= '".$enddate."')
@@ -606,9 +610,10 @@ class Cashier_model extends CI_Model {
 		
 		$query = ("
 		SELECT * , SUM(sewagudang) as whc, SUM(cargo_charge) as csc, SUM(ppn) as ppn, SUM(administrasi) as adm, SUM(total_biaya) as totbiaya, SUM(totalkoli) as koli, ROUND(SUM(totalberatbayar),1) as kilo FROM deliverybill as db
-			JOIN ( SELECT * from isimanifestin WHERE isvoid = 0) as isi  ON isi.no_smu = db.nosmu
+			JOIN isimanifestin AS isi  ON isi.no_smu = db.nosmu
 			JOIN ( SELECT *, airline as in_airline from manifestin WHERE isvoid = 0) as mani ON mani.id_manifestin = isi.id_manifestin
 			WHERE db.isvoid = 0
+			AND isi.isvoid = 0
 			AND DATE(db.tglbayar) >= '" . $startdate . "'
 			AND DATE(db.tglbayar) <= '" . $enddate . "'
 			AND db.status = 0
@@ -620,8 +625,9 @@ class Cashier_model extends CI_Model {
 		{
 		$query = ("
 			SELECT *, SUM(sewagudang) as whc, SUM(cargo_charge) as csc, SUM(ppn) as ppn, SUM(administrasi) as adm, SUM(total_biaya) as totbiaya, SUM(in_koli) as koli, SUM(in_berat_bayar) as kilo FROM deliverybill as db
-			JOIN ( SELECT * from in_dtbarang WHERE in_status_bayar = 'yes' ) as indt ON indt.in_btb = db.no_smubtb
+			JOIN in_dtbarang AS indt ON indt.in_btb = db.no_smubtb
 			WHERE db.isvoid = 0
+			AND indt.in_status_bayar = 'yes'
 			AND DATE(db.tglbayar) >= '" . $startdate . "'
 			AND DATE(db.tglbayar) <= '" . $enddate . "'
 			AND db.status = 0
@@ -637,8 +643,10 @@ class Cashier_model extends CI_Model {
 	 {
 		$query = ("
 		SELECT *, SUM(sewagudang) as whc, SUM(cargo_charge) as csc, SUM(ppn) as ppn, SUM(administrasi) as adm, SUM(total_biaya) as totbiaya, SUM(btb_totalkoli) as koli, ROUND(SUM(btb_totalberatbayar),1) as kilo FROM deliverybill as db
-		JOIN ( SELECT * from out_dtbarang_h WHERE status_bayar = 'yes' AND isvoid = 0 ) as outdt ON outdt.btb_nobtb = db.no_smubtb
+		JOIN  out_dtbarang_h AS outdt ON outdt.btb_nobtb = db.no_smubtb
 		WHERE db.isvoid = 0
+		AND outdt.status_bayar = 'yes' 
+		AND outdt.isvoid = 0
 		AND DATE(db.tglbayar) >= '" . $startdate . "'
 		AND DATE(db.tglbayar) <= '" . $enddate . "'
 		AND db.status = 1
@@ -693,7 +701,8 @@ class Cashier_model extends CI_Model {
 		{*/
 			$query = ("
 			SELECT * FROM deliverybill as db
-			JOIN ( SELECT * from in_dtbarang WHERE  in_status_bayar = 'yes' ) as indt ON indt.in_btb = db.no_smubtb
+			JOIN in_dtbarang AS indt ON indt.in_btb = db.no_smubtb
+			WHERE  indt.in_status_bayar = 'yes'
 			ORDER BY tglbayar ASC
 			LIMIT " . $limit . ", " . $offset . "
 			

@@ -25,7 +25,7 @@ class Piutang_model extends CI_Model {
 	public function get_all_piutang($num,$offset)
 	{
 		$query = " 	SELECT * FROM in_dtbarang AS indt 
-					LEFT JOIN (SELECT inb_id,inb_status_void FROM in_breakdown ) AS inb 
+					LEFT JOIN in_breakdown AS inb 
 					ON indt.in_inb_id = inb.inb_id
 					WHERE indt.in_status_bayar = 'no' AND inb.inb_status_void='no'
 					ORDER BY indt.in_tgl_manifest DESC,
@@ -39,11 +39,11 @@ class Piutang_model extends CI_Model {
 	public function count_all_piutang()
 	{
 		$query = " 	SELECT * FROM in_dtbarang AS indt 
-					LEFT JOIN (SELECT inb_id,inb_status_void FROM in_breakdown ) AS inb 
+					LEFT JOIN in_breakdown AS inb 
 					ON indt.in_inb_id = inb.inb_id
 					WHERE indt.in_status_bayar = 'no' AND inb.inb_status_void='no'
 					";
-		$query = $this->db->query($query);
+		$query = $this->db->query($query); 
 		return $query->num_rows();
 	}
 	
@@ -52,7 +52,7 @@ class Piutang_model extends CI_Model {
 		
 		if($agent == 'ALL'){$agent = '';}
 		$query = " 	SELECT * FROM in_dtbarang AS indt 
-					LEFT JOIN (SELECT inb_id,inb_status_void FROM in_breakdown ) AS inb 
+					LEFT JOIN in_breakdown AS inb 
 					ON indt.in_inb_id = inb.inb_id
 					WHERE indt.in_status_bayar = 'no' AND inb.inb_status_void='no'
 					AND ( (indt.in_agent LIKE '%$agent%') OR (indt.in_name LIKE '%$agent%') )
@@ -68,7 +68,7 @@ class Piutang_model extends CI_Model {
 	{
 		if($agent == 'ALL'){$agent = '';}
 		$query = " 	SELECT * FROM in_dtbarang AS indt 
-					LEFT JOIN (SELECT inb_id,inb_status_void FROM in_breakdown ) AS inb 
+					LEFT JOIN in_breakdown AS inb 
 					ON indt.in_inb_id = inb.inb_id
 					WHERE indt.in_status_bayar = 'no' AND inb.inb_status_void='no'
 					AND ( (indt.in_agent LIKE '%$agent%') OR (indt.in_name LIKE '%$agent%') )
@@ -81,7 +81,7 @@ class Piutang_model extends CI_Model {
 	{
 		if($agent == 'ALL'){$agent = '';}
 		$query = " 	SELECT * FROM in_dtbarang AS indt 
-					LEFT JOIN (SELECT inb_id,inb_status_void FROM in_breakdown ) AS inb 
+					LEFT JOIN in_breakdown AS inb 
 					ON indt.in_inb_id = inb.inb_id
 					WHERE indt.in_status_bayar = 'no' AND inb.inb_status_void='no'
 					AND ( (indt.in_agent LIKE '%$agent%') OR (indt.in_name LIKE '%$agent%') )
